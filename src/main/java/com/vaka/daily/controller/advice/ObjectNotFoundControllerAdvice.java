@@ -16,20 +16,20 @@ public class ObjectNotFoundControllerAdvice {
     @ResponseStatus(HttpStatus.NOT_FOUND)
     public Map<String, Object> objectNotFoundExceptionHandler(ObjectNotFoundException ex) {
         Map<String, Object> details = new HashMap<>();
-        List<String> missingFields = new ArrayList<>();
+        StringBuilder missingFields = new StringBuilder();
         String requestedId = String.valueOf(ex.getId());
         String requestedName = ex.getName();
 
         if (ex.getName() == null) {
-            missingFields.add("id;");
+            missingFields.append("id;");
             log.error("{} | {} with ID {{}} not found", ex.getClass().getSimpleName(), ex.getObjectName(), ex.getId());
         } else if (ex.getId() == null) {
-            missingFields.add("name;");
+            missingFields.append("name;");
             log.error("{} | {} with unique name {{}} not found", ex.getClass().getSimpleName(), ex.getObjectName(),
                     ex.getName());
         } else {
-            missingFields.add("name;");
-            missingFields.add("id;");
+            missingFields.append("name;");
+            missingFields.append("id;");
             log.error("{} | {} with id {{}} and unique name {{}} not found", ex.getClass().getSimpleName(),
                     ex.getObjectName(),
                     ex.getId(),
@@ -38,7 +38,7 @@ public class ObjectNotFoundControllerAdvice {
 
         Map<String, Object> map = new HashMap<>();
 
-        details.put("missingFields", missingFields);
+        details.put("missingFields", missingFields.toString());
         details.put("requestedId", requestedId);
         details.put("requestedName", requestedName);
 
