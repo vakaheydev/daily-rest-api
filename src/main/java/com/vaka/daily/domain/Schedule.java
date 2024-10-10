@@ -30,8 +30,7 @@ public class Schedule {
 
     @ManyToOne
     @JoinColumn(name = "id_user")
-//    @JsonBackReference
-//    @JsonIgnoreProperties("schedules")
+    @JsonIgnoreProperties({"schedules"})
     private User user;
 
     @OneToMany(mappedBy = "schedule")

@@ -1,6 +1,7 @@
 package com.vaka.daily.domain;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import jakarta.persistence.*;
@@ -55,7 +56,6 @@ public class User {
     private UserType userType;
 
     @OneToMany(mappedBy = "user")
-//    @JsonManagedReference
     private List<Schedule> schedules = new ArrayList<>();
 
     public User(Integer id, String login, String password, String firstName, String secondName, String patronymic,
