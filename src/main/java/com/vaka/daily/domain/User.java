@@ -1,6 +1,8 @@
 package com.vaka.daily.domain;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Size;
@@ -14,6 +16,10 @@ import java.util.List;
 @Table(name = "daily_user")
 @Getter
 @Setter
+@JsonIdentityInfo(
+        generator = ObjectIdGenerators.PropertyGenerator.class,
+        property = "id"
+)
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -49,7 +55,7 @@ public class User {
     private UserType userType;
 
     @OneToMany(mappedBy = "user")
-    @JsonManagedReference
+//    @JsonManagedReference
     private List<Schedule> schedules = new ArrayList<>();
 
     public User(Integer id, String login, String password, String firstName, String secondName, String patronymic,

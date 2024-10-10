@@ -1,3 +1,5 @@
+package controller;
+
 import com.vaka.daily.Application;
 import com.vaka.daily.exception.ValidationException;
 import com.vaka.daily.repository.ScheduleRepository;

@@ -1,7 +1,9 @@
+package controller;
+
 import com.vaka.daily.Application;
 import com.vaka.daily.exception.ValidationException;
 import com.vaka.daily.repository.ScheduleRepository;
-import com.vaka.daily.repository.UserRepository;
+import com.vaka.daily.repository.TaskRepository;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import lombok.extern.slf4j.Slf4j;
@@ -24,8 +26,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureMockMvc
 @Slf4j
 @Transactional
-public class ScheduleControllerTest {
-    private final static String TEST_URL = "/api/schedule";
+public class TaskControllerTest {
+    private final static String TEST_URL = "/api/task";
 
     @Autowired
     MockMvc mockMvc;
@@ -37,29 +39,29 @@ public class ScheduleControllerTest {
     private ScheduleRepository scheduleRepository;
 
     @Autowired
-    private UserRepository userRepository;
+    private TaskRepository taskRepository;
 
     @BeforeEach
     void setUp() {
-        entityManager.createNativeQuery("alter sequence schedule_schedule_id_seq restart with " + getNewId())
+        entityManager.createNativeQuery("alter sequence task_task_id_seq restart with " + getNewId())
                 .executeUpdate();
     }
 
     Integer getNewId() {
-        return Math.toIntExact(scheduleRepository.count() + 1);
+        return Math.toIntExact(taskRepository.count() + 1);
     }
 
-    @DisplayName("Should return all schedules")
+    @DisplayName("Should return all tasks")
     @Test
     void testGet() throws Exception {
         mockMvc.perform(get(TEST_URL))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-                .andExpect(jsonPath("$.length()").value(3));
+                .andExpect(jsonPath("$.length()").value(5));
     }
 
-    @DisplayName("Should return schedule with ID 1")
+    @DisplayName("Should return task with ID 1")
     @Test
     void testGetById() throws Exception {
         Integer ID = 1;
@@ -68,14 +70,15 @@ public class ScheduleControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$.id").value(ID))
-                .andExpect(jsonPath("$.name").value("main"));
+                .andExpect(jsonPath("$.name").value("Прочитать книгу"));
 
     }
 
-    @DisplayName("Should create new schedule")
+    @DisplayName("Should create new task")
     @Test
     void testPost() throws Exception {
-        String jsonString = "{ \"name\" : \"new_schedule_name\", \"user\" : {\"id\" : \"1\" }}";
+        String jsonString = "{\"name\":\"new_task\",\"description\":\"Успешно пройти тесты\"," +
+                "\"deadline\":\"2023-11-30T00:00:00\",\"status\":true, \"schedule\" : { \"id\": \"1\" }}";
         int newId = getNewId();
 
         mockMvc.perform(post(TEST_URL)
@@ -84,21 +87,22 @@ public class ScheduleControllerTest {
                 .andDo(print())
                 .andExpect(status().isCreated())
                 .andExpect(jsonPath("$.id").value(newId))
-                .andExpect(jsonPath("$.name").value("new_schedule_name"));
+                .andExpect(jsonPath("$.name").value("new_task"));
 
-        mockMvc.perform(get("/api/user/1"))
+        mockMvc.perform(get("/api/schedule/1"))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id").value(1))
-                .andExpect(jsonPath("$.login").value("vaka"))
-                .andExpect(jsonPath("$.schedules[0].name").value("main"))
-                .andExpect(jsonPath("$.schedules[1].name").value("new_schedule_name"));
+                .andExpect(jsonPath("$.name").value("main"))
+                .andExpect(jsonPath("$.tasks[3].name").value("new_task"))
+                .andExpect(jsonPath("$.tasks[3].description").value("Успешно пройти тесты"));
     }
 
     @DisplayName("Validation should failed (empty name)")
     @Test
     void testPost2() throws Exception {
-        String jsonString = "{ \"name\" : \"\", \"user\" : {\"id\" : \"1\" }}";
+        String jsonString = "{\"name\":\"\",\"description\":\"Прочитать книгу Java Core\"," +
+                "\"deadline\":\"2023-11-30T00:00:00\",\"status\":true}";
 
         mockMvc.perform(post(TEST_URL)
                         .contentType(MediaType.APPLICATION_JSON)
@@ -109,10 +113,11 @@ public class ScheduleControllerTest {
 
     }
 
-    @DisplayName("Should update schedule")
+    @DisplayName("Should update task")
     @Test
     void testPut() throws Exception {
-        String jsonString = "{ \"name\" : \"updated_schedule_name\" }";
+        String jsonString = "{\"name\":\"updated_task_name\",\"description\":\"Прочитать книгу Java Core\"," +
+                "\"deadline\":\"2023-11-30T00:00:00\",\"status\":true}";
         Integer ID = 1;
 
         mockMvc.perform(put(TEST_URL + "/{id}", ID)
@@ -121,10 +126,10 @@ public class ScheduleControllerTest {
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id").value(ID))
-                .andExpect(jsonPath("$.name").value("updated_schedule_name"));
+                .andExpect(jsonPath("$.name").value("updated_task_name"));
     }
 
-    @DisplayName("Should delete schedule")
+    @DisplayName("Should delete task")
     @Test
     void testDelete() throws Exception {
         Integer ID = 1;

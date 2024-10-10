@@ -1,7 +1,6 @@
 package com.vaka.daily.domain;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.*;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Size;
@@ -14,6 +13,10 @@ import java.util.List;
 @Table(name = "schedule")
 @Getter
 @Setter
+@JsonIdentityInfo(
+        generator = ObjectIdGenerators.PropertyGenerator.class,
+        property = "id"
+)
 public class Schedule {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -27,7 +30,8 @@ public class Schedule {
 
     @ManyToOne
     @JoinColumn(name = "id_user")
-    @JsonBackReference
+//    @JsonBackReference
+//    @JsonIgnoreProperties("schedules")
     private User user;
 
     @OneToMany(mappedBy = "schedule")

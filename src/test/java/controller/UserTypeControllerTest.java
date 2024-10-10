@@ -1,7 +1,8 @@
+package controller;
+
 import com.vaka.daily.Application;
 import com.vaka.daily.exception.ValidationException;
-import com.vaka.daily.repository.ScheduleRepository;
-import com.vaka.daily.repository.TaskRepository;
+import com.vaka.daily.repository.UserTypeRepository;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import lombok.extern.slf4j.Slf4j;
@@ -24,8 +25,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureMockMvc
 @Slf4j
 @Transactional
-public class TaskControllerTest {
-    private final static String TEST_URL = "/api/task";
+public class UserTypeControllerTest {
+    private final static String TEST_URL = "/api/user_type";
 
     @Autowired
     MockMvc mockMvc;
@@ -34,32 +35,29 @@ public class TaskControllerTest {
     private EntityManager entityManager;
 
     @Autowired
-    private ScheduleRepository scheduleRepository;
-
-    @Autowired
-    private TaskRepository taskRepository;
+    private UserTypeRepository repo;
 
     @BeforeEach
     void setUp() {
-        entityManager.createNativeQuery("alter sequence task_task_id_seq restart with " + getNewId())
+        entityManager.createNativeQuery("alter sequence user_type_user_type_id_seq restart with " + getNewId())
                 .executeUpdate();
     }
 
     Integer getNewId() {
-        return Math.toIntExact(taskRepository.count() + 1);
+        return Math.toIntExact(repo.count() + 1);
     }
 
-    @DisplayName("Should return all tasks")
+    @DisplayName("Should return all user types")
     @Test
     void testGet() throws Exception {
         mockMvc.perform(get(TEST_URL))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-                .andExpect(jsonPath("$.length()").value(5));
+                .andExpect(jsonPath("$.length()").value(4));
     }
 
-    @DisplayName("Should return task with ID 1")
+    @DisplayName("Should return user type with ID 1")
     @Test
     void testGetById() throws Exception {
         Integer ID = 1;
@@ -68,15 +66,14 @@ public class TaskControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$.id").value(ID))
-                .andExpect(jsonPath("$.name").value("Прочитать книгу"));
+                .andExpect(jsonPath("$.name").value("user"));
 
     }
 
-    @DisplayName("Should create new task")
+    @DisplayName("Should create new user type")
     @Test
     void testPost() throws Exception {
-        String jsonString = "{\"name\":\"new_task\",\"description\":\"Успешно пройти тесты\"," +
-                "\"deadline\":\"2023-11-30T00:00:00\",\"status\":true, \"schedule\" : { \"id\": \"1\" }}";
+        String jsonString = "{ \"name\" : \"new_user_type\" }";
         int newId = getNewId();
 
         mockMvc.perform(post(TEST_URL)
@@ -85,22 +82,14 @@ public class TaskControllerTest {
                 .andDo(print())
                 .andExpect(status().isCreated())
                 .andExpect(jsonPath("$.id").value(newId))
-                .andExpect(jsonPath("$.name").value("new_task"));
+                .andExpect(jsonPath("$.name").value("new_user_type"));
 
-        mockMvc.perform(get("/api/schedule/1"))
-                .andDo(print())
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.id").value(1))
-                .andExpect(jsonPath("$.name").value("main"))
-                .andExpect(jsonPath("$.tasks[3].name").value("new_task"))
-                .andExpect(jsonPath("$.tasks[3].description").value("Успешно пройти тесты"));
     }
 
     @DisplayName("Validation should failed (empty name)")
     @Test
     void testPost2() throws Exception {
-        String jsonString = "{\"name\":\"\",\"description\":\"Прочитать книгу Java Core\"," +
-                "\"deadline\":\"2023-11-30T00:00:00\",\"status\":true}";
+        String jsonString = "{ \"name\" : \"\" }";
 
         mockMvc.perform(post(TEST_URL)
                         .contentType(MediaType.APPLICATION_JSON)
@@ -111,11 +100,10 @@ public class TaskControllerTest {
 
     }
 
-    @DisplayName("Should update task")
+    @DisplayName("Should update user type")
     @Test
     void testPut() throws Exception {
-        String jsonString = "{\"name\":\"updated_task_name\",\"description\":\"Прочитать книгу Java Core\"," +
-                "\"deadline\":\"2023-11-30T00:00:00\",\"status\":true}";
+        String jsonString = "{ \"name\" : \"updated_user_type\" }";
         Integer ID = 1;
 
         mockMvc.perform(put(TEST_URL + "/{id}", ID)
@@ -124,10 +112,10 @@ public class TaskControllerTest {
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id").value(ID))
-                .andExpect(jsonPath("$.name").value("updated_task_name"));
+                .andExpect(jsonPath("$.name").value("updated_user_type"));
     }
 
-    @DisplayName("Should delete task")
+    @DisplayName("Should delete user type")
     @Test
     void testDelete() throws Exception {
         Integer ID = 1;

@@ -1,6 +1,9 @@
+package controller;
+
 import com.vaka.daily.Application;
 import com.vaka.daily.exception.ValidationException;
-import com.vaka.daily.repository.UserTypeRepository;
+import com.vaka.daily.repository.ScheduleRepository;
+import com.vaka.daily.repository.UserRepository;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import lombok.extern.slf4j.Slf4j;
@@ -23,8 +26,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureMockMvc
 @Slf4j
 @Transactional
-public class UserTypeControllerTest {
-    private final static String TEST_URL = "/api/user_type";
+public class ScheduleControllerTest {
+    private final static String TEST_URL = "/api/schedule";
 
     @Autowired
     MockMvc mockMvc;
@@ -33,29 +36,32 @@ public class UserTypeControllerTest {
     private EntityManager entityManager;
 
     @Autowired
-    private UserTypeRepository repo;
+    private ScheduleRepository scheduleRepository;
+
+    @Autowired
+    private UserRepository userRepository;
 
     @BeforeEach
     void setUp() {
-        entityManager.createNativeQuery("alter sequence user_type_user_type_id_seq restart with " + getNewId())
+        entityManager.createNativeQuery("alter sequence schedule_schedule_id_seq restart with " + getNewId())
                 .executeUpdate();
     }
 
     Integer getNewId() {
-        return Math.toIntExact(repo.count() + 1);
+        return Math.toIntExact(scheduleRepository.count() + 1);
     }
 
-    @DisplayName("Should return all user types")
+    @DisplayName("Should return all schedules")
     @Test
     void testGet() throws Exception {
         mockMvc.perform(get(TEST_URL))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-                .andExpect(jsonPath("$.length()").value(4));
+                .andExpect(jsonPath("$.length()").value(3));
     }
 
-    @DisplayName("Should return user type with ID 1")
+    @DisplayName("Should return schedule with ID 1")
     @Test
     void testGetById() throws Exception {
         Integer ID = 1;
@@ -64,14 +70,15 @@ public class UserTypeControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$.id").value(ID))
-                .andExpect(jsonPath("$.name").value("user"));
+                .andExpect(jsonPath("$.user.login").value("vaka"))
+                .andExpect(jsonPath("$.name").value("main"));
 
     }
 
-    @DisplayName("Should create new user type")
+    @DisplayName("Should create new schedule")
     @Test
     void testPost() throws Exception {
-        String jsonString = "{ \"name\" : \"new_user_type\" }";
+        String jsonString = "{ \"name\" : \"new_schedule_name\", \"user\" : {\"id\" : \"1\" }}";
         int newId = getNewId();
 
         mockMvc.perform(post(TEST_URL)
@@ -80,14 +87,21 @@ public class UserTypeControllerTest {
                 .andDo(print())
                 .andExpect(status().isCreated())
                 .andExpect(jsonPath("$.id").value(newId))
-                .andExpect(jsonPath("$.name").value("new_user_type"));
+                .andExpect(jsonPath("$.name").value("new_schedule_name"));
 
+        mockMvc.perform(get("/api/user/1"))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.id").value(1))
+                .andExpect(jsonPath("$.login").value("vaka"))
+                .andExpect(jsonPath("$.schedules[0].name").value("main"))
+                .andExpect(jsonPath("$.schedules[1].name").value("new_schedule_name"));
     }
 
     @DisplayName("Validation should failed (empty name)")
     @Test
     void testPost2() throws Exception {
-        String jsonString = "{ \"name\" : \"\" }";
+        String jsonString = "{ \"name\" : \"\", \"user\" : {\"id\" : \"1\" }}";
 
         mockMvc.perform(post(TEST_URL)
                         .contentType(MediaType.APPLICATION_JSON)
@@ -98,10 +112,10 @@ public class UserTypeControllerTest {
 
     }
 
-    @DisplayName("Should update user type")
+    @DisplayName("Should update schedule")
     @Test
     void testPut() throws Exception {
-        String jsonString = "{ \"name\" : \"updated_user_type\" }";
+        String jsonString = "{ \"name\" : \"updated_schedule_name\" }";
         Integer ID = 1;
 
         mockMvc.perform(put(TEST_URL + "/{id}", ID)
@@ -110,10 +124,10 @@ public class UserTypeControllerTest {
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id").value(ID))
-                .andExpect(jsonPath("$.name").value("updated_user_type"));
+                .andExpect(jsonPath("$.name").value("updated_schedule_name"));
     }
 
-    @DisplayName("Should delete user type")
+    @DisplayName("Should delete schedule")
     @Test
     void testDelete() throws Exception {
         Integer ID = 1;
