@@ -3,22 +3,21 @@ package com.vaka.daily.service;
 import com.vaka.daily.domain.UserType;
 import com.vaka.daily.exception.UserTypeNotFoundException;
 import com.vaka.daily.repository.UserTypeRepository;
-import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.validation.BindingResult;
 
 import java.util.List;
 
 @Service
 @Slf4j
 public class SimpleUserTypeService implements UserTypeService {
-     private final UserTypeRepository repository;
-     @Autowired
-     public SimpleUserTypeService(UserTypeRepository repository) {
-         this.repository = repository;
-     }
+    private final UserTypeRepository repository;
+
+    @Autowired
+    public SimpleUserTypeService(UserTypeRepository repository) {
+        this.repository = repository;
+    }
 
     @Override
     public List<UserType> getAll() {
@@ -47,7 +46,7 @@ public class SimpleUserTypeService implements UserTypeService {
 
     @Override
     public UserType updateById(Integer id, UserType entity) {
-        if(!repository.existsById(id)) {
+        if (!repository.existsById(id)) {
             throw new UserTypeNotFoundException(id);
         }
 
@@ -57,7 +56,7 @@ public class SimpleUserTypeService implements UserTypeService {
 
     @Override
     public void deleteById(Integer id) {
-        if(!repository.existsById(id)) {
+        if (!repository.existsById(id)) {
             throw new UserTypeNotFoundException(id);
         }
 

@@ -82,8 +82,20 @@ public class UserControllerTest {
     @DisplayName("Should create new user (all fields)")
     @Test
     void testPost() throws Exception {
-        String jsonString = "{\"login\":\"new_user\",\"password\":\"new_password\",\"firstName\":\"Иван\"," +
-                "\"secondName\":\"Новгородов\",\"patronymic\":\"Андреевич\",\"userType\":{\"id\":4,\"name\":\"developer\"},\"schedules\":[{\"id\":1,\"name\":\"main\",\"tasks\":[{\"id\":1,\"name\":\"Прочитать книгу\",\"description\":\"Прочитать книгу Java Core\",\"deadline\":\"2023-11-30T00:00:00\",\"status\":true},{\"id\":2,\"name\":\"Разработать REST API\",\"description\":\"Полностью сделать REST API Vaka Daily\",\"deadline\":\"2024-08-31T00:00:00\",\"status\":false},{\"id\":3,\"name\":\"Прочитать книгу\",\"description\":\"Закончить книгу Pro Spring 6\",\"deadline\":\"2024-07-31T00:00:00\",\"status\":false}]}]}\n";
+        String jsonString = """
+{
+    "login": "new_user",
+    "password": "new_password",
+    "firstName": "Иван",
+    "secondName": "Новгородов",
+    "patronymic": "Андреевич",
+    "userType": {
+        "id": 2,
+        "name": "vip"
+    },
+    "schedules": []
+}
+""";
         int newId = getNewId();
 
         mockMvc.perform(post(TEST_URL)
@@ -93,7 +105,8 @@ public class UserControllerTest {
                 .andExpect(status().isCreated())
                 .andExpect(jsonPath("$.id").value(newId))
                 .andExpect(jsonPath("$.login").value("new_user"))
-                .andExpect(jsonPath("$.password").value("new_password"));
+                .andExpect(jsonPath("$.password").value("new_password"))
+                .andExpect(jsonPath("$.userType.name").value("vip"));
 
     }
 
@@ -132,8 +145,21 @@ public class UserControllerTest {
     @DisplayName("Should update user")
     @Test
     void testPut() throws Exception {
-        String jsonString = "{\"login\":\"new_user\",\"password\":\"new_password\",\"firstName\":\"Иван\"," +
-                "\"secondName\":\"Новгородов\",\"patronymic\":\"Андреевич\",\"userType\":{\"id\":4,\"name\":\"developer\"},\"schedules\":[{\"id\":1,\"name\":\"main\",\"tasks\":[{\"id\":1,\"name\":\"Прочитать книгу\",\"description\":\"Прочитать книгу Java Core\",\"deadline\":\"2023-11-30T00:00:00\",\"status\":true},{\"id\":2,\"name\":\"Разработать REST API\",\"description\":\"Полностью сделать REST API Vaka Daily\",\"deadline\":\"2024-08-31T00:00:00\",\"status\":false},{\"id\":3,\"name\":\"Прочитать книгу\",\"description\":\"Закончить книгу Pro Spring 6\",\"deadline\":\"2024-07-31T00:00:00\",\"status\":false}]}]}\n";
+        String jsonString = """
+{
+    "id": 1,
+    "login": "new_user",
+    "password": "new_password",
+    "firstName": "Иван",
+    "secondName": "Новгородов",
+    "patronymic": "Андреевич",
+    "userType": {
+        "id": 2,
+        "name": "vip"
+    },
+    "schedules": []
+}
+""";
         Integer ID = 1;
 
         mockMvc.perform(put(TEST_URL + "/{id}", ID)
@@ -144,7 +170,7 @@ public class UserControllerTest {
                 .andExpect(jsonPath("$.id").value(ID))
                 .andExpect(jsonPath("$.login").value("new_user"))
                 .andExpect(jsonPath("$.password").value("new_password"))
-                .andExpect(jsonPath("$.schedules[0].name").value("main"));
+                .andExpect(jsonPath("$.userType.name").value("vip"));
     }
 
     @DisplayName("Should delete user")

@@ -14,6 +14,7 @@ public abstract class ObjectNotFoundException extends RuntimeException {
         this.name = name;
         this.objectName = objectName;
     }
+
     public ObjectNotFoundException(String objectName, Integer id) {
         super(String.format("%s with ID {%d} not found", objectName, id));
         this.id = id;

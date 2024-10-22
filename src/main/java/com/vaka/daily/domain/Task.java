@@ -1,19 +1,28 @@
 package com.vaka.daily.domain;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "Task", uniqueConstraints = { @UniqueConstraint(columnNames = { "task_name", "task_description",
-        "id_schedule" })})
+@Table(name = "Task", uniqueConstraints = {@UniqueConstraint(columnNames = {"task_name", "task_description",
+        "id_schedule"})})
+@JsonIdentityInfo(
+        generator = ObjectIdGenerators.PropertyGenerator.class,
+        property = "id"
+)
 @Getter
 @Setter
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class Task {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -36,7 +45,8 @@ public class Task {
     @Column(name = "task_status")
     private Boolean status;
 
-    @ManyToOne
+    @NotNull
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.MERGE)
     @JoinColumn(name = "id_schedule")
     @JsonBackReference
     private Schedule schedule;

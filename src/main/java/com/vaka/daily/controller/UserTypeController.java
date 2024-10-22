@@ -47,7 +47,8 @@ public class UserTypeController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<?> updateById(@PathVariable("id") Integer id, @RequestBody @Valid  UserType userType, BindingResult bindingResult) {
+    public ResponseEntity<?> updateById(@PathVariable("id") Integer id, @RequestBody @Valid UserType userType,
+                                        BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             throw new ValidationException(bindingResult);
         }

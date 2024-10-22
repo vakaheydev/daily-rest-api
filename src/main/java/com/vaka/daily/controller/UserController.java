@@ -1,7 +1,7 @@
 package com.vaka.daily.controller;
 
 import com.vaka.daily.domain.User;
-import com.vaka.daily.domain.dto.UserDTO;
+import com.vaka.daily.domain.dto.UserDto;
 import com.vaka.daily.exception.ValidationException;
 import com.vaka.daily.service.UserService;
 import jakarta.validation.Valid;
@@ -55,7 +55,7 @@ public class UserController {
     }
 
     @PostMapping("/dto")
-    public ResponseEntity<?> createFromDTO(@RequestBody @Valid UserDTO userDTO, BindingResult bindingResult) {
+    public ResponseEntity<?> createFromDTO(@RequestBody @Valid UserDto userDTO, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             throw new ValidationException(bindingResult);
         }

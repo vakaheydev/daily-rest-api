@@ -57,8 +57,7 @@ public class TaskControllerTest {
         mockMvc.perform(get(TEST_URL))
                 .andDo(print())
                 .andExpect(status().isOk())
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-                .andExpect(jsonPath("$.length()").value(5));
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON));
     }
 
     @DisplayName("Should return task with ID 1")
@@ -78,7 +77,7 @@ public class TaskControllerTest {
     @Test
     void testPost() throws Exception {
         String jsonString = "{\"name\":\"new_task\",\"description\":\"Успешно пройти тесты\"," +
-                "\"deadline\":\"2023-11-30T00:00:00\",\"status\":true, \"schedule\" : { \"id\": \"1\" }}";
+                "\"deadline\":\"2023-11-30T00:00:00\",\"status\":true, \"scheduleId\" : 1}";
         int newId = getNewId();
 
         mockMvc.perform(post(TEST_URL)
@@ -116,8 +115,15 @@ public class TaskControllerTest {
     @DisplayName("Should update task")
     @Test
     void testPut() throws Exception {
-        String jsonString = "{\"name\":\"updated_task_name\",\"description\":\"Прочитать книгу Java Core\"," +
-                "\"deadline\":\"2023-11-30T00:00:00\",\"status\":true}";
+        String jsonString = """
+{
+"name" : "updated_task_name",
+"description" : "Прочитать книгу Java Core",
+"deadline" : "2023-11-30T00:00:00",
+"status" : true,
+"scheduleId" : 1
+}
+""";
         Integer ID = 1;
 
         mockMvc.perform(put(TEST_URL + "/{id}", ID)

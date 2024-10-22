@@ -2,6 +2,7 @@ package com.vaka.daily.exception;
 
 public class TaskNotFoundException extends ObjectNotFoundException {
     public static final String OBJECT_NAME = "Task";
+
     public TaskNotFoundException(Integer id, String name) {
         super(OBJECT_NAME, id, name);
     }

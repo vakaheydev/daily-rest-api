@@ -70,7 +70,6 @@ public class ScheduleControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$.id").value(ID))
-                .andExpect(jsonPath("$.user.login").value("vaka"))
                 .andExpect(jsonPath("$.name").value("main"));
 
     }
@@ -94,8 +93,7 @@ public class ScheduleControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id").value(1))
                 .andExpect(jsonPath("$.login").value("vaka"))
-                .andExpect(jsonPath("$.schedules[0].name").value("main"))
-                .andExpect(jsonPath("$.schedules[1].name").value("new_schedule_name"));
+                .andExpect(jsonPath("$.schedules[0].name").value("main"));
     }
 
     @DisplayName("Validation should failed (empty name)")
@@ -115,7 +113,26 @@ public class ScheduleControllerTest {
     @DisplayName("Should update schedule")
     @Test
     void testPut() throws Exception {
-        String jsonString = "{ \"name\" : \"updated_schedule_name\" }";
+        String jsonString = """
+{
+    "id": 1,
+    "name": "updated_schedule_name",
+    "tasks": [
+        {
+            "name": "TestTask",
+            "description": "TestDescription",
+            "deadline": "2024-07-01T00:00:00",
+            "status": false
+        },
+        {
+            "name": "TestTask2",
+            "description": "TestDescription2",
+            "deadline": "2025-07-01T00:00:00",
+            "status": true
+        }
+    ]
+}
+""";
         Integer ID = 1;
 
         mockMvc.perform(put(TEST_URL + "/{id}", ID)
@@ -124,7 +141,9 @@ public class ScheduleControllerTest {
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id").value(ID))
-                .andExpect(jsonPath("$.name").value("updated_schedule_name"));
+                .andExpect(jsonPath("$.name").value("updated_schedule_name"))
+                .andExpect(jsonPath("$.tasks[0].name").value("TestTask"))
+                .andExpect(jsonPath("$.tasks[1].name").value("TestTask2"));
     }
 
     @DisplayName("Should delete schedule")

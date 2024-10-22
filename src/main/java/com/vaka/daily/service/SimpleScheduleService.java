@@ -6,12 +6,14 @@ import com.vaka.daily.exception.ScheduleNotFoundException;
 import com.vaka.daily.exception.UserNotFoundException;
 import com.vaka.daily.repository.ScheduleRepository;
 import com.vaka.daily.repository.UserRepository;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
+@Slf4j
 public class SimpleScheduleService implements ScheduleService {
     private final ScheduleRepository scheduleRepository;
     private final UserRepository userRepository;
@@ -29,7 +31,8 @@ public class SimpleScheduleService implements ScheduleService {
 
     @Override
     public Schedule getById(Integer id) {
-        return scheduleRepository.findById(id).orElseThrow(() -> new ScheduleNotFoundException(id));
+        var temp = scheduleRepository.findById(id);
+        return temp.orElseThrow(() -> new ScheduleNotFoundException(id));
     }
 
     @Override

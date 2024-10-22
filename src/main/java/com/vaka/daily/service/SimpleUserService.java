@@ -3,7 +3,7 @@ package com.vaka.daily.service;
 import com.vaka.daily.domain.Schedule;
 import com.vaka.daily.domain.User;
 import com.vaka.daily.domain.UserType;
-import com.vaka.daily.domain.dto.UserDTO;
+import com.vaka.daily.domain.dto.UserDto;
 import com.vaka.daily.exception.UserNotFoundException;
 import com.vaka.daily.repository.UserRepository;
 import lombok.extern.slf4j.Slf4j;
@@ -20,7 +20,8 @@ public class SimpleUserService implements UserService {
     private final ScheduleService scheduleService;
 
     @Autowired
-    public SimpleUserService(UserRepository userRepository, UserTypeService userTypeService, ScheduleService scheduleService) {
+    public SimpleUserService(UserRepository userRepository, UserTypeService userTypeService,
+                             ScheduleService scheduleService) {
         this.userRepository = userRepository;
         this.userTypeService = userTypeService;
         this.scheduleService = scheduleService;
@@ -47,7 +48,7 @@ public class SimpleUserService implements UserService {
     }
 
     @Override
-    public User createFromDTO(UserDTO userDTO) {
+    public User createFromDTO(UserDto userDTO) {
         User user = convertFromDTO(userDTO);
 
         UserType defaultUserType = userTypeService.getDefaultUserType();
@@ -94,7 +95,7 @@ public class SimpleUserService implements UserService {
         userRepository.deleteById(id);
     }
 
-    private User convertFromDTO(UserDTO userDTO) {
+    private User convertFromDTO(UserDto userDTO) {
         User user = new User();
         user.setLogin(userDTO.getLogin());
         user.setPassword(userDTO.getPassword());
