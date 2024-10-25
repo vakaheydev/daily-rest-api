@@ -53,7 +53,7 @@ public class User {
     @JoinColumn(name = "user_type_id", nullable = false)
     private UserType userType;
 
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
     private List<Schedule> schedules = new ArrayList<>();
 
     public User(Integer id, String login, String password, String firstName, String secondName, String patronymic,

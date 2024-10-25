@@ -142,6 +142,38 @@ public class UserControllerTest {
                 .andExpect(result -> assertTrue(result.getResolvedException() instanceof ValidationException));
     }
 
+    @DisplayName("Should create new user with default schedule")
+    @Test
+    void testPost4() throws Exception {
+        String jsonString = """
+{
+    "login": "new_user",
+    "password": "new_password",
+    "firstName": "Иван",
+    "secondName": "Новгородов",
+    "patronymic": "Андреевич",
+    "userType": {
+        "id": 2,
+        "name": "admin"
+    },
+    "schedules": []
+}
+""";
+        int newId = getNewId();
+
+        mockMvc.perform(post(TEST_URL)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(jsonString))
+                .andDo(print())
+                .andExpect(status().isCreated())
+                .andExpect(jsonPath("$.id").value(newId))
+                .andExpect(jsonPath("$.login").value("new_user"))
+                .andExpect(jsonPath("$.password").value("new_password"))
+                .andExpect(jsonPath("$.userType.name").value("admin"))
+                .andExpect(jsonPath("$.schedules[0].name").value("main"))
+                .andExpect(jsonPath("$.schedules[0].user").value(newId));
+    }
+
     @DisplayName("Should update user")
     @Test
     void testPut() throws Exception {
