@@ -67,13 +67,13 @@ public class SimpleUserService implements UserService {
             entity.setUserType(defaultUserType);
         }
 
-        if (entity.getSchedules() == null) {
-            scheduleService.createDefaultSchedule(entity);
+        User saved = userRepository.save(entity);
+
+        if (entity.getSchedules().isEmpty()) {
+            saved.addSchedule(scheduleService.createDefaultSchedule(entity));
         }
 
-        log.info(entity.toString());
-
-        return userRepository.save(entity);
+        return saved;
     }
 
     @Override
