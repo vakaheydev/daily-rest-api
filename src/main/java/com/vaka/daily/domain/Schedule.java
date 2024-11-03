@@ -32,7 +32,6 @@ public class Schedule {
     private String name;
 
     @ManyToOne
-//    @JsonIgnore
     @JoinColumn(name = "id_user")
     @JsonIgnoreProperties({"schedules"})
     private User user;
