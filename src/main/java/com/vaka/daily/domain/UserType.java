@@ -1,6 +1,7 @@
 package com.vaka.daily.domain;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Size;
@@ -11,6 +12,10 @@ import java.util.List;
 @Entity
 @Table(name = "user_type")
 @Data
+@JsonIdentityInfo(
+        generator = ObjectIdGenerators.PropertyGenerator.class,
+        property = "id"
+)
 public class UserType {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -22,7 +27,6 @@ public class UserType {
     @Column(name = "user_type_name", nullable = false, unique = true, length = 100)
     private String name;
 
-    @JsonIgnore
     @OneToMany(mappedBy = "userType")
     private List<User> users;
 

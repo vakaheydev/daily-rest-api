@@ -57,7 +57,7 @@ public class UserTypeControllerTest {
                 .andExpect(jsonPath("$.length()").value(4));
     }
 
-    @DisplayName("Should return user type with ID 1")
+    @DisplayName("Should return user type with ID 1 (user)")
     @Test
     void testGetById() throws Exception {
         Integer ID = 1;
@@ -66,7 +66,27 @@ public class UserTypeControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$.id").value(ID))
-                .andExpect(jsonPath("$.name").value("user"));
+                .andExpect(jsonPath("$.name").value("user"))
+                .andExpect(jsonPath("$.users.length()").value(2))
+                .andExpect(jsonPath("$.users[0].login").value("aka"))
+                .andExpect(jsonPath("$.users[0].userType").value(1))
+                .andExpect(jsonPath("$.users[1].login").value("retere"))
+                .andExpect(jsonPath("$.users[1].userType").value(1));
+
+    }
+
+    @DisplayName("Should return user type with ID 4 (developer)")
+    @Test
+    void testGetById2() throws Exception {
+        Integer ID = 4;
+        mockMvc.perform(get(TEST_URL + "/{id}", ID))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$.id").value(ID))
+                .andExpect(jsonPath("$.name").value("developer"))
+                .andExpect(jsonPath("$.users.length()").value(1))
+                .andExpect(jsonPath("$.users[0].login").value("vaka"));
 
     }
 
