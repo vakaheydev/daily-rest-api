@@ -10,6 +10,7 @@ CREATE TABLE IF NOT EXISTS Daily_User (
     user_first_name VARCHAR(100) NOT NULL,
     user_second_name VARCHAR(100) NOT NULL,
     user_patronymic VARCHAR(100),
+    user_telegram_id BIGINT CONSTRAINT Daily_User_Telegram_Id UNIQUE,
     user_type_id INTEGER REFERENCES User_Type (user_type_id)
 );
 

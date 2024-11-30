@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.Setter;
@@ -56,6 +57,21 @@ public class User {
     @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
     private List<Schedule> schedules = new ArrayList<>();
 
+    @Column(name = "user_telegram_id", unique = true)
+    private Long tgId;
+
+    public User(Integer id, String login, String password, String firstName, String secondName, String patronymic,
+                UserType userType, Long tgId) {
+        this.id = id;
+        this.login = login;
+        this.password = password;
+        this.firstName = firstName;
+        this.secondName = secondName;
+        this.patronymic = patronymic;
+        this.userType = userType;
+        this.tgId = tgId;
+    }
+
     public User(Integer id, String login, String password, String firstName, String secondName, String patronymic,
                 UserType userType) {
         this.id = id;
@@ -83,6 +99,7 @@ public class User {
                 ", firstName='" + firstName + '\'' +
                 ", secondName='" + secondName + '\'' +
                 ", patronymic='" + patronymic + '\'' +
+                ", tgId(optional)=" + tgId + '\'' +
                 ", userType=" + userType.getName() +
                 '}';
     }

@@ -34,15 +34,21 @@ public class UserController {
     }
 
     @GetMapping("/search")
-    public ResponseEntity<?> search(@RequestParam(name = "user_type_name", required = false) String userTypeName,
-                                    @RequestParam(name = "login", required = false) String login) {
-        if (userTypeName != null && login != null) {
-            // TODO: 6/19/2024 Implements criteria and specifications
-        } else if (userTypeName != null) {
+    public ResponseEntity<?> search(
+            @RequestParam(name = "user_type_name", required = false) String userTypeName,
+            @RequestParam(name = "login", required = false) String login,
+            @RequestParam(name = "tgId", required = false) Long tgId)
+    {
+        if (userTypeName != null) {
             return ResponseEntity.ok(service.getByUserTypeName(userTypeName));
+        } else if (login != null) {
+            return ResponseEntity.ok(service.getByUniqueName(login));
+        } else if (tgId != null) {
+            return ResponseEntity.ok(service.getByTgId(tgId));
         }
 
-        return ResponseEntity.ok(service.getByUniqueName(login));
+        throw new IllegalArgumentException("No specified criteria");
+        // TODO: 6/19/2024 Implements criteria and specifications
     }
 
     @PostMapping

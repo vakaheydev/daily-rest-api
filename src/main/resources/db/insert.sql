@@ -7,10 +7,13 @@ VALUES
     ('developer');
 
 INSERT INTO
-    daily_user (user_login, user_password, user_first_name, user_second_name, user_patronymic,
-                user_type_id)
+    daily_user (user_login, user_password, user_first_name, user_second_name, user_patronymic, user_telegram_id, user_type_id)
 VALUES
-    ('vaka', 'vaka123', 'Иван', 'Новгородов', 'Андреевич', 4),
+    ('vaka', 'vaka123', 'Иван', 'Новгородов', 'Андреевич', 1531192384, 4);
+
+INSERT INTO
+    daily_user (user_login, user_password, user_first_name, user_second_name, user_patronymic, user_type_id)
+VALUES
     ('aka', 'aka123', 'Анна', 'Новгородова', 'Андреевна', 1),
     ('retere', 'retere123', 'Павел', 'Новгородов', 'Андреевич', 1);
 

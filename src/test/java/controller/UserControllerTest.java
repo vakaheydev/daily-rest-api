@@ -93,7 +93,8 @@ public class UserControllerTest {
         "id": 2,
         "name": "vip"
     },
-    "schedules": []
+    "schedules": [],
+    "tgId": 1
 }
 """;
         int newId = getNewId();
@@ -106,7 +107,8 @@ public class UserControllerTest {
                 .andExpect(jsonPath("$.id").value(newId))
                 .andExpect(jsonPath("$.login").value("new_user"))
                 .andExpect(jsonPath("$.password").value("new_password"))
-                .andExpect(jsonPath("$.userType.name").value("vip"));
+                .andExpect(jsonPath("$.userType.name").value("vip"))
+                .andExpect(jsonPath("$.tgId").value(1));
 
     }
 
@@ -213,5 +215,18 @@ public class UserControllerTest {
         mockMvc.perform(delete(TEST_URL + "/{id}", ID))
                 .andDo(print())
                 .andExpect(status().isNoContent());
+    }
+
+    @DisplayName("Should get user with TG id")
+    @Test
+    void testGetWithTgId() throws Exception {
+        long tgId = 1531192384;
+        mockMvc.perform(get(TEST_URL + "/search?tgId=" + tgId))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.id").value(1))
+                .andExpect(jsonPath("$.login").value("vaka"))
+                .andExpect(jsonPath("$.password").value("vaka123"))
+                .andExpect(jsonPath("$.tgId").value(tgId));
     }
 }

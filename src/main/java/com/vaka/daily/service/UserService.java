@@ -12,4 +12,6 @@ public interface UserService extends CommonService<User> {
     User getByUniqueName(String name);
 
     User createFromDTO(UserDto userDTO);
+
+    User getByTgId(Long tgId);
 }

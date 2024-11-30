@@ -17,4 +17,7 @@ public interface UserRepository extends JpaRepository<User, Integer> {
                     "where ut.name = :userTypeName"
     )
     List<User> findByUserTypeName(@Param("userTypeName") String userTypeName);
+
+    @Query("select u from User u where u.tgId = :tgId")
+    User findByTelegramId(@Param("tgId") Long tgId);
 }

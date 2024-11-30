@@ -43,6 +43,11 @@ public class SimpleUserService implements UserService {
     }
 
     @Override
+    public User getByTgId(Long tgId) {
+        return userRepository.findByTelegramId(tgId);
+    }
+
+    @Override
     public List<User> getByUserTypeName(String userTypeName) {
         return userRepository.findByUserTypeName(userTypeName);
     }
