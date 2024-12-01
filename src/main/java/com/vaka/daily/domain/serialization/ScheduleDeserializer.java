@@ -81,13 +81,27 @@ public class ScheduleDeserializer extends JsonDeserializer<Schedule> {
         tasksNode.forEach(node -> {
             String name = node.findValue("name").asText();
             String description = node.findValue("description").asText();
-            LocalDateTime deadLine = LocalDateTime.parse(node.findValue("deadline").asText());
+            JsonNode deadlineNode = node.findValue("deadline");
+            LocalDateTime deadline;
+            if (deadlineNode.isArray() && deadlineNode.size() >= 6) {
+                deadline = LocalDateTime.of(
+                        deadlineNode.get(0).asInt(),  // Год
+                        deadlineNode.get(1).asInt(),  // Месяц
+                        deadlineNode.get(2).asInt(),  // День
+                        deadlineNode.get(3).asInt(),  // Час
+                        deadlineNode.get(4).asInt(),  // Минута
+                        deadlineNode.get(5).asInt(),  // Секунда
+                        deadlineNode.size() > 6 ? deadlineNode.get(6).asInt() : 0); // Наносекунда
+            } else {
+                deadline = LocalDateTime.parse(deadlineNode.asText());
+            }
+
             boolean status = node.findValue("status").asBoolean();
 
             Task task = Task.builder()
                     .name(name)
                     .description(description)
-                    .deadline(deadLine)
+                    .deadline(deadline)
                     .status(status)
                     .schedule(schedule)
                     .build();
