@@ -6,6 +6,7 @@ import com.vaka.daily.exception.ScheduleNotFoundException;
 import com.vaka.daily.exception.UserNotFoundException;
 import com.vaka.daily.repository.ScheduleRepository;
 import com.vaka.daily.repository.UserRepository;
+import jakarta.validation.ValidationException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -58,6 +59,10 @@ public class SimpleScheduleService implements ScheduleService {
 
     @Override
     public Schedule create(Schedule entity) {
+        if (entity.getUser() == null) {
+            throw new ValidationException("Schedule with null user");
+        }
+
         return scheduleRepository.save(entity);
     }
 

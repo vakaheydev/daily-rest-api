@@ -130,7 +130,8 @@ public class ScheduleControllerTest {
             "deadline": "2025-07-01T00:00:00",
             "status": true
         }
-    ]
+    ],
+    "user": { "id" : 1 }
 }
 """;
         Integer ID = 1;

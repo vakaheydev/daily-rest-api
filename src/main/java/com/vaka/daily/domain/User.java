@@ -1,6 +1,7 @@
 package com.vaka.daily.domain;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotEmpty;
@@ -52,6 +53,7 @@ public class User {
 
     @ManyToOne
     @JoinColumn(name = "user_type_id", nullable = false)
+    @JsonIgnoreProperties({"users"})
     private UserType userType;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)

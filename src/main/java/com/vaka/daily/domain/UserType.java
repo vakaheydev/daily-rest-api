@@ -12,10 +12,10 @@ import java.util.List;
 @Entity
 @Table(name = "user_type")
 @Data
-@JsonIdentityInfo(
-        generator = ObjectIdGenerators.PropertyGenerator.class,
-        property = "id"
-)
+//@JsonIdentityInfo(
+//        generator = ObjectIdGenerators.PropertyGenerator.class,
+//        property = "id"
+//)
 public class UserType {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

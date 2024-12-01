@@ -63,12 +63,16 @@ public class UserControllerTest {
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$[0].userType.id").value(4))
+                .andExpect(jsonPath("$[0].userType.name").value("developer"))
+                .andExpect(jsonPath("$[2].userType.id").value(1))
+                .andExpect(jsonPath("$[2].userType.name").value("user"))
                 .andExpect(jsonPath("$.length()").value(3));
     }
 
     @DisplayName("Should return user with ID 1")
     @Test
-    void testGetById() throws Exception {
+    void testGetByIdOne() throws Exception {
         Integer ID = 1;
         mockMvc.perform(get(TEST_URL + "/{id}", ID))
                 .andDo(print())
@@ -76,6 +80,21 @@ public class UserControllerTest {
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$.id").value(ID))
                 .andExpect(jsonPath("$.login").value("vaka"));
+
+    }
+
+    @DisplayName("Should return user with ID 3")
+    @Test
+    void testGetByIdThree() throws Exception {
+        Integer ID = 3;
+        mockMvc.perform(get(TEST_URL + "/{id}", ID))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$.id").value(ID))
+                .andExpect(jsonPath("$.login").value("retere"))
+                .andExpect(jsonPath("$.userType.id").value("1"))
+                .andExpect(jsonPath("$.userType.name").value("user"));
 
     }
 
