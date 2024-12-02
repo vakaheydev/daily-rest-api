@@ -11,6 +11,11 @@ public class UserNotFoundException extends ObjectNotFoundException {
         super(OBJECT_NAME, id);
     }
 
+    public UserNotFoundException(Long telegramId) {
+        super(String.format("%s with telegram ID {%d} not found", OBJECT_NAME, telegramId));
+        putDetail("tgId", String.valueOf(telegramId));
+    }
+
     public UserNotFoundException(String name) {
         super(OBJECT_NAME, name);
     }

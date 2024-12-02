@@ -44,7 +44,7 @@ public class SimpleUserService implements UserService {
 
     @Override
     public User getByTgId(Long tgId) {
-        return userRepository.findByTelegramId(tgId);
+        return userRepository.findByTelegramId(tgId).orElseThrow(() -> new UserNotFoundException(tgId));
     }
 
     @Override

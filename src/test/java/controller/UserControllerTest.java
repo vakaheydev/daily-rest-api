@@ -163,6 +163,16 @@ public class UserControllerTest {
                 .andExpect(result -> assertTrue(result.getResolvedException() instanceof ValidationException));
     }
 
+    @DisplayName("Should throws UserNotFoundException by TG ID")
+    @Test
+    void testGetByWrongTgId() throws Exception {
+        long tgId = -1L;
+
+        mockMvc.perform(get(TEST_URL + "/search?tgId=" + tgId))
+                .andDo(print())
+                .andExpect(status().isNotFound());
+    }
+
     @DisplayName("Should create new user with default schedule")
     @Test
     void testPost4() throws Exception {
