@@ -45,7 +45,6 @@ public class SimpleTaskService implements TaskService {
                 .scheduleId(task.getSchedule().getId())
                 .build();
     }
-
     @Override
     public List<Task> getAll() {
         return taskRepository.findAll();

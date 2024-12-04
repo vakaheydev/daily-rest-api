@@ -5,7 +5,6 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotEmpty;
-import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.Setter;
@@ -60,10 +59,10 @@ public class User {
     private List<Schedule> schedules = new ArrayList<>();
 
     @Column(name = "user_telegram_id", unique = true)
-    private Long tgId;
+    private Long telegramId;
 
     public User(Integer id, String login, String password, String firstName, String secondName, String patronymic,
-                UserType userType, Long tgId) {
+                UserType userType, Long telegramId) {
         this.id = id;
         this.login = login;
         this.password = password;
@@ -71,7 +70,7 @@ public class User {
         this.secondName = secondName;
         this.patronymic = patronymic;
         this.userType = userType;
-        this.tgId = tgId;
+        this.telegramId = telegramId;
     }
 
     public User(Integer id, String login, String password, String firstName, String secondName, String patronymic,
@@ -101,7 +100,7 @@ public class User {
                 ", firstName='" + firstName + '\'' +
                 ", secondName='" + secondName + '\'' +
                 ", patronymic='" + patronymic + '\'' +
-                ", tgId(optional)=" + tgId + '\'' +
+                ", tgId(optional)=" + telegramId + '\'' +
                 ", userType=" + userType.getName() +
                 '}';
     }

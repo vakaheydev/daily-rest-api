@@ -4,6 +4,8 @@ import com.vaka.daily.abstraction.CommonService;
 import com.vaka.daily.domain.Task;
 import com.vaka.daily.domain.dto.TaskDto;
 
+import java.util.List;
+
 public interface TaskService extends CommonService<Task> {
     Task fromDto(TaskDto dto);
 

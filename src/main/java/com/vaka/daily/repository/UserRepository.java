@@ -18,6 +18,6 @@ public interface UserRepository extends JpaRepository<User, Integer> {
     )
     List<User> findByUserTypeName(@Param("userTypeName") String userTypeName);
 
-    @Query("select u from User u where u.tgId = :tgId")
+    @Query("select u from User u where u.telegramId = :tgId")
     Optional<User> findByTelegramId(@Param("tgId") Long tgId);
 }
