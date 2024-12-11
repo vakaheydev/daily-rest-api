@@ -5,9 +5,30 @@
 spring.datasource.url =
 spring.datasource.username =
 spring.datasource.password =
-spring.datasource.driver-class-name= org.postgresql.Driver
+spring.datasource.driver-class-name =
 
 # ============================
 #          Hibernate
 # ============================
 spring.jpa.hibernate.ddl-auto = none
+
+
+# ============================
+#           Logging
+# ============================
+logging.level.org.springframework.web.filter.CommonsRequestLoggingFilter=WARN
+logging.level.org.springframework.http.converter.json=DEBUG
+logging.level.com.vaka.daily=DEBUG
+
+
+# ============================
+#           Telegram
+# ============================
+telegram.bot.url=http://localhost:8888/api
+telegram.enabled=false
+
+
+# ============================
+#           Jackson
+# ============================
+

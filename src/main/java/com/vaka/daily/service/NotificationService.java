@@ -3,6 +3,7 @@ package com.vaka.daily.service;
 import com.vaka.daily.domain.Task;
 import com.vaka.daily.domain.User;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -11,6 +12,8 @@ import java.util.List;
 @Service
 @Slf4j
 public class NotificationService {
+    @Value("${telegram.enabled}")
+    private boolean telegramEnabled;
     private final TelegramService telegramService;
     private final TaskNotificationService notificationService;
 
@@ -26,13 +29,13 @@ public class NotificationService {
         for (Task task : tasksForNotification) {
             User user = task.getSchedule().getUser();
 
-            if (user.getTelegramId() != null) {
-                notifyUser(user, task);
+            if (telegramEnabled && user.getTelegramId() != null) {
+                notifyUserByTelegram(user, task);
             }
         }
     }
 
-    private void notifyUser(User user, Task task) {
+    private void notifyUserByTelegram(User user, Task task) {
         log.debug("Sending notification to {}[tgId={}]", user.getLogin(), user.getTelegramId());
         telegramService.sendMessage(user.getTelegramId(), formatTask(task));
     }

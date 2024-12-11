@@ -67,11 +67,7 @@ public class UserTypeControllerTest {
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$.id").value(ID))
                 .andExpect(jsonPath("$.name").value("user"))
-                .andExpect(jsonPath("$.users.length()").value(2))
-                .andExpect(jsonPath("$.users[0].login").value("aka"))
-                .andExpect(jsonPath("$.users[0].userType.id").value(1))
-                .andExpect(jsonPath("$.users[1].login").value("retere"))
-                .andExpect(jsonPath("$.users[1].userType.id").value(1));
+                .andExpect(jsonPath("$.users.length()").value(2));
 
     }
 

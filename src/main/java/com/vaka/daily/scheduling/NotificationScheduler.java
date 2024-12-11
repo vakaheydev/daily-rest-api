@@ -18,7 +18,6 @@ public class NotificationScheduler {
 
     @Scheduled(fixedRate = 10, timeUnit = TimeUnit.SECONDS)
     public void reportCurrentTime() {
-        log.debug("Notification scheduler started");
         notificationService.notifyUsers();
     }
 }

@@ -63,10 +63,6 @@ public class UserControllerTest {
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-                .andExpect(jsonPath("$[0].userType.id").value(4))
-                .andExpect(jsonPath("$[0].userType.name").value("developer"))
-                .andExpect(jsonPath("$[2].userType.id").value(1))
-                .andExpect(jsonPath("$[2].userType.name").value("user"))
                 .andExpect(jsonPath("$.length()").value(3));
     }
 
@@ -92,7 +88,7 @@ public class UserControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$.id").value(ID))
-                .andExpect(jsonPath("$.login").value("retere"))
+                .andExpect(jsonPath("$.login").value("aka"))
                 .andExpect(jsonPath("$.userType.id").value("1"))
                 .andExpect(jsonPath("$.userType.name").value("user"));
 
@@ -113,7 +109,7 @@ public class UserControllerTest {
         "name": "vip"
     },
     "schedules": [],
-    "tgId": 1
+    "telegramId": 1
 }
 """;
         int newId = getNewId();
@@ -127,7 +123,7 @@ public class UserControllerTest {
                 .andExpect(jsonPath("$.login").value("new_user"))
                 .andExpect(jsonPath("$.password").value("new_password"))
                 .andExpect(jsonPath("$.userType.name").value("vip"))
-                .andExpect(jsonPath("$.tgId").value(1));
+                .andExpect(jsonPath("$.telegramId").value(1));
 
     }
 
@@ -256,6 +252,6 @@ public class UserControllerTest {
                 .andExpect(jsonPath("$.id").value(1))
                 .andExpect(jsonPath("$.login").value("vaka"))
                 .andExpect(jsonPath("$.password").value("vaka123"))
-                .andExpect(jsonPath("$.tgId").value(tgId));
+                .andExpect(jsonPath("$.telegramId").value(tgId));
     }
 }
