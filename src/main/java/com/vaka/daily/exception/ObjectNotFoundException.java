@@ -2,7 +2,10 @@ package com.vaka.daily.exception;
 
 import lombok.Getter;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Optional;
+import java.util.Set;
 
 /**
  * Common exception if object not found by ID, unique name or both

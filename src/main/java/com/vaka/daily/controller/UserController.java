@@ -37,8 +37,7 @@ public class UserController {
     public ResponseEntity<?> search(
             @RequestParam(name = "user_type_name", required = false) String userTypeName,
             @RequestParam(name = "login", required = false) String login,
-            @RequestParam(name = "tgId", required = false) Long tgId)
-    {
+            @RequestParam(name = "tgId", required = false) Long tgId) {
         if (userTypeName != null) {
             return ResponseEntity.ok(service.getByUserTypeName(userTypeName));
         } else if (login != null) {

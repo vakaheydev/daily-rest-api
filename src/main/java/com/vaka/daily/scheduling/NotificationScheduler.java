@@ -1,15 +1,11 @@
 package com.vaka.daily.scheduling;
 
-import java.util.List;
-import java.util.concurrent.TimeUnit;
-
-import com.vaka.daily.domain.Task;
-import com.vaka.daily.domain.User;
 import com.vaka.daily.service.NotificationService;
-import com.vaka.daily.service.TaskNotificationService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
+
+import java.util.concurrent.TimeUnit;
 
 @Slf4j
 @Component
