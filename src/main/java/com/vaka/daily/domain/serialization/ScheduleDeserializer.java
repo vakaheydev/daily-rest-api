@@ -73,25 +73,26 @@ public class ScheduleDeserializer extends JsonDeserializer<Schedule> {
     private List<Task> parseTasks(Schedule schedule, JsonNode scheduleNode) {
         JsonNode tasksNode = scheduleNode.get("tasks");
 
-        if (!tasksNode.isNull()) {
+        if (tasksNode.isNull()) {
             return null;
         }
 
         List<Task> tasks = new ArrayList<>();
         tasksNode.forEach(node -> {
+            Integer id = (node.findValue("id") == null ? null : node.findValue("id").asInt());
             String name = node.findValue("name").asText();
             String description = node.findValue("description").asText();
             JsonNode deadlineNode = node.findValue("deadline");
             LocalDateTime deadline;
-            if (deadlineNode.isArray() && deadlineNode.size() >= 6) {
-                deadline = LocalDateTime.of(
-                        deadlineNode.get(0).asInt(),  // Год
-                        deadlineNode.get(1).asInt(),  // Месяц
-                        deadlineNode.get(2).asInt(),  // День
-                        deadlineNode.get(3).asInt(),  // Час
-                        deadlineNode.get(4).asInt(),  // Минута
-                        deadlineNode.get(5).asInt(),  // Секунда
-                        deadlineNode.size() > 6 ? deadlineNode.get(6).asInt() : 0); // Наносекунда
+            if (deadlineNode.isArray()) {
+                int year = deadlineNode.get(0) == null ? 1970 : deadlineNode.get(0).asInt();
+                int month = deadlineNode.get(1) == null ? 1 : deadlineNode.get(1).asInt();
+                int day = deadlineNode.get(2) == null ? 1 : deadlineNode.get(2).asInt();
+                int hour = deadlineNode.get(3) == null ? 0 : deadlineNode.get(3).asInt();
+                int minute = deadlineNode.get(4) == null ? 0 : deadlineNode.get(4).asInt();
+                int second = deadlineNode.get(5) == null ? 0 : deadlineNode.get(5).asInt();
+                int nanoSecond = deadlineNode.get(6) == null ? 0 : deadlineNode.get(6).asInt();
+                deadline = LocalDateTime.of(year, month, day, hour, minute, second, nanoSecond);
             } else {
                 deadline = LocalDateTime.parse(deadlineNode.asText());
             }
@@ -99,6 +100,7 @@ public class ScheduleDeserializer extends JsonDeserializer<Schedule> {
             boolean status = node.findValue("status").asBoolean();
 
             Task task = Task.builder()
+                    .id(id)
                     .name(name)
                     .description(description)
                     .deadline(deadline)
