@@ -51,6 +51,12 @@ public class Task {
     @JsonBackReference
     private Schedule schedule;
 
+    @NotNull
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.MERGE)
+    @JoinColumn(name = "id_task_type")
+    @JsonBackReference
+    private TaskType taskType;
+
     @Override
     public String toString() {
         return "Task{" +
@@ -60,6 +66,7 @@ public class Task {
                 ", deadline=" + deadline +
                 ", status=" + status +
                 ", schedule=(" + schedule.getId() + "," + schedule.getName() +
+                "), taskType=(" + taskType.toString() +
                 ")}";
     }
 }

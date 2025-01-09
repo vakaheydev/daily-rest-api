@@ -1,6 +1,5 @@
 package com.vaka.daily.scheduling;
 
-import com.vaka.daily.service.NotificationService;
 import com.vaka.daily.service.SchedulerService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;

@@ -1,6 +1,8 @@
 package com.vaka.daily.controller;
 
 import com.vaka.daily.domain.Schedule;
+import com.vaka.daily.domain.dto.ScheduleDto;
+import com.vaka.daily.domain.mapper.ScheduleMapper;
 import com.vaka.daily.exception.ValidationException;
 import com.vaka.daily.service.ScheduleService;
 import jakarta.validation.Valid;
@@ -16,10 +18,11 @@ import org.springframework.web.bind.annotation.*;
 @Slf4j
 public class ScheduleController {
     private final ScheduleService service;
+    private final ScheduleMapper scheduleMapper;
 
-    @Autowired
-    public ScheduleController(ScheduleService service) {
+    public ScheduleController(ScheduleService service, ScheduleMapper scheduleMapper) {
         this.service = service;
+        this.scheduleMapper = scheduleMapper;
     }
 
     @GetMapping
@@ -45,22 +48,26 @@ public class ScheduleController {
     }
 
     @PostMapping
-    public ResponseEntity<?> create(@RequestBody @Valid Schedule schedule, BindingResult bindingResult) {
+    public ResponseEntity<?> create(@RequestBody @Valid ScheduleDto scheduleDto, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             throw new ValidationException(bindingResult);
         }
+
+        Schedule schedule = scheduleMapper.fromDto(scheduleDto);
 
         return ResponseEntity.status(HttpStatus.CREATED).body(service.create(schedule));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<?> updateById(@PathVariable("id") Integer id, @RequestBody @Valid Schedule schedule,
+    public ResponseEntity<?> updateById(@PathVariable("id") Integer id, @RequestBody @Valid ScheduleDto scheduleDto,
                                         BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             throw new ValidationException(bindingResult);
         }
 
-        return ResponseEntity.ok(service.updateById(id, schedule));
+        Schedule updated = service.updateById(id, scheduleMapper.fromDto(scheduleDto));
+
+        return ResponseEntity.ok(updated);
     }
 
     @DeleteMapping("/{id}")

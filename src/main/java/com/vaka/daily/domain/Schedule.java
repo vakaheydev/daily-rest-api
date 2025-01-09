@@ -10,6 +10,8 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -22,8 +24,10 @@ import java.util.List;
         generator = ObjectIdGenerators.PropertyGenerator.class,
         property = "id"
 )
+@AllArgsConstructor
 @Getter
 @Setter
+@Builder
 public class Schedule {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

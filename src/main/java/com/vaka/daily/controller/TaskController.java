@@ -2,6 +2,7 @@ package com.vaka.daily.controller;
 
 import com.vaka.daily.domain.Task;
 import com.vaka.daily.domain.dto.TaskDto;
+import com.vaka.daily.domain.mapper.TaskMapper;
 import com.vaka.daily.exception.ValidationException;
 import com.vaka.daily.service.ScheduleService;
 import com.vaka.daily.service.TaskService;
@@ -18,20 +19,22 @@ import org.springframework.web.bind.annotation.*;
 public class TaskController {
     private final TaskService taskService;
     private final ScheduleService scheduleService;
+    private final TaskMapper taskMapper;
 
-    public TaskController(TaskService taskService, ScheduleService scheduleService) {
+    public TaskController(TaskService taskService, ScheduleService scheduleService, TaskMapper taskMapper) {
         this.taskService = taskService;
         this.scheduleService = scheduleService;
+        this.taskMapper = taskMapper;
     }
 
     @GetMapping
     public ResponseEntity<?> get() {
-        return ResponseEntity.ok(taskService.getAll().stream().map(taskService::toDto));
+        return ResponseEntity.ok(taskService.getAll().stream().map(taskMapper::toDto));
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<?> getById(@PathVariable("id") Integer id) {
-        return ResponseEntity.ok(taskService.toDto(taskService.getById(id)));
+        return ResponseEntity.ok(taskMapper.toDto(taskService.getById(id)));
     }
 
 //    @GetMapping("/search")
@@ -53,9 +56,9 @@ public class TaskController {
             throw new ValidationException(bindingResult);
         }
 
-        Task task = taskService.fromDto(taskDto);
+        Task task = taskMapper.fromDto(taskDto);
 
-        return ResponseEntity.status(HttpStatus.CREATED).body(taskService.toDto(taskService.create(task)));
+        return ResponseEntity.status(HttpStatus.CREATED).body(taskMapper.toDto(taskService.create(task)));
     }
 
     @PutMapping("/{id}")
@@ -65,9 +68,9 @@ public class TaskController {
             throw new ValidationException(bindingResult);
         }
 
-        Task updated = taskService.updateById(id, taskService.fromDto(taskDto));
+        Task updated = taskService.updateById(id, taskMapper.fromDto(taskDto));
 
-        return ResponseEntity.ok(taskService.toDto(updated));
+        return ResponseEntity.ok(taskMapper.toDto(updated));
     }
 
     @DeleteMapping("/{id}")

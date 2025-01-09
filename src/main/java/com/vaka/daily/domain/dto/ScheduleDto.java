@@ -8,30 +8,21 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalDateTime;
+import java.util.List;
 
 @Data
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class TaskDto {
+public class ScheduleDto {
     private Integer id;
 
     @NotEmpty
     @Size(max = 100)
     private String name;
 
-    @NotEmpty
-    @Size(max = 100)
-    private String description;
-
-    private LocalDateTime deadline;
-
-    private Boolean status;
-
     @NotNull
-    private Integer scheduleId;
+    private Integer userId;
 
-    @NotNull
-    private Integer taskTypeId;
+    private List<TaskDto> tasks;
 }

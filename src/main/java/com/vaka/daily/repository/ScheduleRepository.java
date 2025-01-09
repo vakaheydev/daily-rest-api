@@ -10,10 +10,6 @@ import java.util.List;
 public interface ScheduleRepository extends JpaRepository<Schedule, Integer> {
     List<Schedule> findByName(String name);
 
-//    @Override
-//    @EntityGraph(attributePaths = "user")
-//    Optional<Schedule> findById(Integer integer);
-
     @Query("select s from Schedule s join s.user u where u.id = :user_id")
     List<Schedule> findByUserId(@Param("user_id") Integer id);
 }

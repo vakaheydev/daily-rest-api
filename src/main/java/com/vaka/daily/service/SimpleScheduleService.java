@@ -2,6 +2,7 @@ package com.vaka.daily.service;
 
 import com.vaka.daily.domain.Schedule;
 import com.vaka.daily.domain.User;
+import com.vaka.daily.domain.dto.ScheduleDto;
 import com.vaka.daily.exception.ScheduleNotFoundException;
 import com.vaka.daily.exception.UserNotFoundException;
 import com.vaka.daily.repository.ScheduleRepository;
@@ -19,7 +20,6 @@ public class SimpleScheduleService implements ScheduleService {
     private final ScheduleRepository scheduleRepository;
     private final UserRepository userRepository;
 
-    @Autowired
     public SimpleScheduleService(ScheduleRepository scheduleRepository, UserRepository userRepository) {
         this.scheduleRepository = scheduleRepository;
         this.userRepository = userRepository;

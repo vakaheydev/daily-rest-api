@@ -15,35 +15,13 @@ import java.util.List;
 public class SimpleTaskService implements TaskService {
     private final TaskRepository taskRepository;
     private final ScheduleService scheduleService;
+    private final TaskTypeService taskTypeService;
 
-    @Autowired
-    public SimpleTaskService(TaskRepository taskRepository, ScheduleService scheduleService) {
+    public SimpleTaskService(TaskRepository taskRepository, ScheduleService scheduleService,
+                             TaskTypeService taskTypeService) {
         this.taskRepository = taskRepository;
         this.scheduleService = scheduleService;
-    }
-
-    @Override
-    public Task fromDto(TaskDto dto) {
-        return Task.builder()
-                .id(dto.getId())
-                .name(dto.getName())
-                .description(dto.getDescription())
-                .deadline(dto.getDeadline())
-                .status(dto.getStatus())
-                .schedule(scheduleService.getById(dto.getScheduleId()))
-                .build();
-    }
-
-    @Override
-    public TaskDto toDto(Task task) {
-        return TaskDto.builder()
-                .id(task.getId())
-                .name(task.getName())
-                .description(task.getDescription())
-                .deadline(task.getDeadline())
-                .status(task.getStatus())
-                .scheduleId(task.getSchedule().getId())
-                .build();
+        this.taskTypeService = taskTypeService;
     }
 
     @Override
@@ -53,8 +31,8 @@ public class SimpleTaskService implements TaskService {
 
     @Override
     public Task getById(Integer id) {
-        var temp = taskRepository.findById(id);
-        return temp.orElseThrow(() -> new TaskNotFoundException(id));
+        var optional = taskRepository.findById(id);
+        return optional.orElseThrow(() -> new TaskNotFoundException(id));
     }
 
     @Override

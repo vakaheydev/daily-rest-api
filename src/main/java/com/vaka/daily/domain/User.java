@@ -51,7 +51,7 @@ public class User {
     private String patronymic;
 
     @ManyToOne
-    @JoinColumn(name = "user_type_id", nullable = false)
+    @JoinColumn(name = "id_user_type", nullable = false)
     @JsonIgnoreProperties({"users"})
     private UserType userType;
 

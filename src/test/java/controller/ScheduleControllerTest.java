@@ -77,7 +77,12 @@ public class ScheduleControllerTest {
     @DisplayName("Should create new schedule")
     @Test
     void testPost() throws Exception {
-        String jsonString = "{ \"name\" : \"new_schedule_name\", \"user\" : {\"id\" : \"1\" }}";
+        String jsonString = """
+{
+    "name" : "new_schedule_name",
+    "userId" : 1
+}
+""";
         int newId = getNewId();
 
         mockMvc.perform(post(TEST_URL)
@@ -118,20 +123,9 @@ public class ScheduleControllerTest {
     "id": 1,
     "name": "updated_schedule_name",
     "tasks": [
-        {
-            "name": "TestTask",
-            "description": "TestDescription",
-            "deadline": "2024-07-01T00:00:00",
-            "status": false
-        },
-        {
-            "name": "TestTask2",
-            "description": "TestDescription2",
-            "deadline": "2025-07-01T00:00:00",
-            "status": true
-        }
+        
     ],
-    "user": { "id" : 1 }
+    "userId": 1
 }
 """;
         Integer ID = 1;
@@ -142,9 +136,7 @@ public class ScheduleControllerTest {
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id").value(ID))
-                .andExpect(jsonPath("$.name").value("updated_schedule_name"))
-                .andExpect(jsonPath("$.tasks[0].name").value("TestTask"))
-                .andExpect(jsonPath("$.tasks[1].name").value("TestTask2"));
+                .andExpect(jsonPath("$.name").value("updated_schedule_name"));
     }
 
     @DisplayName("Should delete schedule")

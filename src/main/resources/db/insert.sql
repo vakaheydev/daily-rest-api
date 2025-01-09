@@ -18,14 +18,15 @@ VALUES ('main', 1),
        ('main', 2),
        ('main', 3);
 
-INSERT INTO task (task_name, task_description, task_deadline, task_status, id_schedule)
-VALUES ('Прочитать книгу', 'Прочитать книгу Java Core', '2023-11-30', true, 1),
-       ('Разработать REST API', 'Полностью сделать REST API Vaka Daily', '2025-05-30', false, 1),
-       ('Прочитать книгу', 'Закончить книгу Pro Spring 6', '2024-07-31', true, 1),
-       ('Таска', 'Чем-то заняться', '2025-05-29', false, 2),
-       ('Таска', 'Чем-то заняться', '2025-05-28', false, 3);
-
 INSERT INTO task_type (task_type_name)
 VALUES ('singular'),
        ('repetitive'),
        ('regular');
+
+INSERT INTO task (task_name, task_description, task_deadline, task_status, id_schedule, id_task_type)
+VALUES ('Прочитать книгу', 'Прочитать книгу Java Core', '2023-11-30', true, 1, 1),
+       ('Разработать REST API', 'Полностью сделать REST API Vaka Daily', '2025-05-30', false, 1, 1),
+       ('Прочитать книгу', 'Закончить книгу Pro Spring 6', '2024-07-31', true, 1, 1),
+       ('Таска', 'Чем-то заняться', '2025-05-29', false, 2, 1),
+       ('Таска', 'Чем-то заняться', '2025-05-28', false, 3, 1);
+
