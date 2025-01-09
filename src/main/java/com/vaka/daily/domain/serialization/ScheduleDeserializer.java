@@ -43,6 +43,9 @@ public class ScheduleDeserializer extends JsonDeserializer<Schedule> {
 
     private Integer parseId(JsonNode scheduleNode) {
         JsonNode idNode = scheduleNode.get("id");
+        if (idNode == null) {
+            return null;
+        }
         if (!idNode.isNull()) {
             return idNode.asInt();
         }
@@ -53,6 +56,9 @@ public class ScheduleDeserializer extends JsonDeserializer<Schedule> {
 
     private String parseName(JsonNode scheduleNode) {
         JsonNode nameNode = scheduleNode.get("name");
+        if (nameNode == null) {
+            return null;
+        }
         if (!nameNode.isNull()) {
             return nameNode.asText();
         }
@@ -62,6 +68,9 @@ public class ScheduleDeserializer extends JsonDeserializer<Schedule> {
 
     private User parseUser(JsonNode scheduleNode) {
         JsonNode scheduleUser = scheduleNode.get("user");
+        if (scheduleUser == null) {
+            return null;
+        }
         if (!scheduleUser.isNull()) {
             int userId = scheduleUser.findValue("id").asInt();
             return userService.getById(userId);
@@ -72,6 +81,10 @@ public class ScheduleDeserializer extends JsonDeserializer<Schedule> {
 
     private List<Task> parseTasks(Schedule schedule, JsonNode scheduleNode) {
         JsonNode tasksNode = scheduleNode.get("tasks");
+
+        if (tasksNode == null) {
+            return null;
+        }
 
         if (tasksNode.isNull()) {
             return null;

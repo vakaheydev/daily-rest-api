@@ -17,6 +17,7 @@ public class TelegramService {
     public void sendMessage(long telegramId, String message) {
         try {
             telegramClient.sendMessage(telegramId, message);
+            log.debug("Sent message to tgId={}", telegramId);
         } catch (ResourceAccessException ex) {
             log.error("Telegram bot isn't available");
         }

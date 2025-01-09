@@ -36,7 +36,6 @@ public class NotificationService {
     }
 
     private void notifyUserByTelegram(User user, Task task) {
-        log.debug("Sending notification to {}[tgId={}]", user.getLogin(), user.getTelegramId());
         telegramService.sendMessage(user.getTelegramId(), formatTask(task));
     }
 
