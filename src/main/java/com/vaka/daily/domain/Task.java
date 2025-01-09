@@ -54,7 +54,6 @@ public class Task {
     @NotNull
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.MERGE)
     @JoinColumn(name = "id_task_type")
-    @JsonBackReference
     private TaskType taskType;
 
     @Override
