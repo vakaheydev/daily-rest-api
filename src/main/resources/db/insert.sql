@@ -5,12 +5,12 @@ VALUES ('user'),
        ('developer');
 
 INSERT INTO daily_user (user_login, user_password, user_first_name, user_second_name,
-                        user_patronymic, user_telegram_id, user_type_id)
+                        user_patronymic, user_telegram_id, id_user_type)
 VALUES ('vaka', 'vaka123', 'Иван', 'Новгородов', 'Андреевич', 1531192384, 4),
        ('retere', 'retere123', 'Павел', 'Новгородов', 'Андреевич', 5393306493, 1);
 
 INSERT INTO daily_user (user_login, user_password, user_first_name, user_second_name,
-                        user_patronymic, user_type_id)
+                        user_patronymic, id_user_type)
 VALUES ('aka', 'aka123', 'Анна', 'Новгородова', 'Андреевна', 1);
 
 INSERT INTO schedule (schedule_name, id_user)
@@ -24,3 +24,8 @@ VALUES ('Прочитать книгу', 'Прочитать книгу Java Cor
        ('Прочитать книгу', 'Закончить книгу Pro Spring 6', '2024-07-31', true, 1),
        ('Таска', 'Чем-то заняться', '2025-05-29', false, 2),
        ('Таска', 'Чем-то заняться', '2025-05-28', false, 3);
+
+INSERT INTO task_type (task_type_name)
+VALUES ('singular'),
+       ('repetitive'),
+       ('regular');

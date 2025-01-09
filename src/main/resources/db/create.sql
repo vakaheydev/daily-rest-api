@@ -11,7 +11,7 @@ CREATE TABLE IF NOT EXISTS Daily_User (
     user_second_name VARCHAR(100) NOT NULL,
     user_patronymic VARCHAR(100),
     user_telegram_id BIGINT CONSTRAINT Daily_User_Telegram_Id UNIQUE,
-    user_type_id INTEGER REFERENCES User_Type (user_type_id)
+    id_user_type INTEGER REFERENCES User_Type (user_type_id)
 );
 
 CREATE TABLE IF NOT EXISTS Schedule (
@@ -21,6 +21,11 @@ CREATE TABLE IF NOT EXISTS Schedule (
     UNIQUE (schedule_name, id_user)
 );
 
+CREATE TABLE IF NOT EXISTS Task_Type (
+    task_type_id INTEGER GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+    task_type_name VARCHAR(100) CONSTRAINT UQ_Task_Type_Name UNIQUE
+)
+
 CREATE TABLE IF NOT EXISTS Task (
     task_id INTEGER GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
     task_name VARCHAR(100) NOT NULL,
@@ -28,6 +33,9 @@ CREATE TABLE IF NOT EXISTS Task (
     task_deadline TIMESTAMP NOT NULL,
     task_status BOOLEAN NOT NULL,
     id_schedule INTEGER REFERENCES Schedule (schedule_id),
+    id_task_type INTEGER REFERENCES Task_Type (task_type_id),
     UNIQUE (task_name, task_description, id_schedule)
 );
+
+
 
