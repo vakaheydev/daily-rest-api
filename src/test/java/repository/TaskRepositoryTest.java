@@ -29,6 +29,6 @@ public class TaskRepositoryTest {
         List<Task> tasksForNotification = taskRepository.findTasksForNotification(LocalDateTime.now());
         log.info(tasksForNotification.toString());
 
-        Assertions.assertEquals(3, tasksForNotification.size());
+        Assertions.assertEquals(6, tasksForNotification.size());
     }
 }

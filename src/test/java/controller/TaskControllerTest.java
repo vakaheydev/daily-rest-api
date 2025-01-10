@@ -77,7 +77,7 @@ public class TaskControllerTest {
     @Test
     void testPost() throws Exception {
         String jsonString = "{\"name\":\"new_task\",\"description\":\"Успешно пройти тесты\"," +
-                "\"deadline\":\"2023-11-30T00:00:00\",\"status\":true, \"scheduleId\" : 1, \"taskTypeId\" : 1}";
+                "\"deadline\":\"2023-11-30T00:00:00\",\"status\":true, \"scheduleId\" : 2, \"taskTypeId\" : 1}";
         int newId = getNewId();
 
         mockMvc.perform(post(TEST_URL)
@@ -88,13 +88,13 @@ public class TaskControllerTest {
                 .andExpect(jsonPath("$.id").value(newId))
                 .andExpect(jsonPath("$.name").value("new_task"));
 
-        mockMvc.perform(get("/api/schedule/1"))
+        mockMvc.perform(get("/api/schedule/2"))
                 .andDo(print())
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.id").value(1))
+                .andExpect(jsonPath("$.id").value(2))
                 .andExpect(jsonPath("$.name").value("main"))
-                .andExpect(jsonPath("$.tasks[3].name").value("new_task"))
-                .andExpect(jsonPath("$.tasks[3].description").value("Успешно пройти тесты"));
+                .andExpect(jsonPath("$.tasks[1].name").value("new_task"))
+                .andExpect(jsonPath("$.tasks[1].description").value("Успешно пройти тесты"));
     }
 
     @DisplayName("Validation should failed (empty name)")

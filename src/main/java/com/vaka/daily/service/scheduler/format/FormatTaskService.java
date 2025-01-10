@@ -5,9 +5,10 @@ import com.vaka.daily.domain.TaskType;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.time.Period;
 import java.time.format.DateTimeFormatter;
 import java.util.Locale;
+
+import static com.vaka.daily.domain.util.TaskUtil.*;
 
 @Service
 public class FormatTaskService {
@@ -15,18 +16,11 @@ public class FormatTaskService {
         String formattedTask = formatTask(task);
         String msg;
 
-        if (task.getTaskType().getName().equals("repetitive")) {
-            if (task.getDeadline().isBefore(LocalDateTime.now())) {
+        if (isTaskRepetitive(task)) {
+            if (isTaskDeadLineLater(task)) {
                 msg = String.format("Вы забыли выполнить регулярное задание\n\n%s", formattedTask);
             } else {
-                Period between = Period.between(LocalDateTime.now().toLocalDate(), task.getDeadline().toLocalDate());
-                int days = between.getDays();
-
-                if (days == 1) {
-                    msg = String.format("Не забудьте!\n\nСкоро нужно будет: %s", formattedTask);
-                } else {
-                    return null;
-                }
+                msg = String.format("Не забудьте!\n\nСкоро нужно будет: %s", formattedTask);
             }
         } else {
             msg = String.format("Напоминание\n\nУ Вас есть нерешённая задача: %s", formattedTask);

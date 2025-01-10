@@ -1,7 +1,7 @@
 package com.vaka.daily.exception;
 
 public class TaskTypeNotFoundException extends ObjectNotFoundException {
-    public static final String OBJECT_NAME = "TaskType";
+    public static final String OBJECT_NAME = "Task Type";
 
     public TaskTypeNotFoundException(Integer id, String name) {
         super(OBJECT_NAME, id, name);

@@ -61,6 +61,9 @@ public class User {
     @Column(name = "user_telegram_id", unique = true)
     private Long telegramId;
 
+    @OneToOne(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
+    private UserNotification userNotification;
+
     public User(Integer id, String login, String password, String firstName, String secondName, String patronymic,
                 UserType userType, Long telegramId) {
         this.id = id;
