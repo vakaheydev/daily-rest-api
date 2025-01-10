@@ -1,7 +1,8 @@
-package com.vaka.daily.service;
+package com.vaka.daily.service.scheduler;
 
 import com.vaka.daily.domain.Task;
 import com.vaka.daily.domain.User;
+import com.vaka.daily.service.scheduler.format.FormatTaskService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -16,10 +17,13 @@ public class NotificationService {
     private boolean telegramEnabled;
     private final TelegramService telegramService;
     private final TaskNotificationService notificationService;
+    private final FormatTaskService formatTaskService;
 
-    public NotificationService(TelegramService telegramService, TaskNotificationService notificationService) {
+    public NotificationService(TelegramService telegramService, TaskNotificationService notificationService,
+                               FormatTaskService formatTaskService) {
         this.telegramService = telegramService;
         this.notificationService = notificationService;
+        this.formatTaskService = formatTaskService;
     }
 
     @Transactional
@@ -36,17 +40,10 @@ public class NotificationService {
     }
 
     private void notifyUserByTelegram(User user, Task task) {
-        telegramService.sendMessage(user.getTelegramId(), formatTask(task));
-    }
+        String msg = formatTaskService.formatTaskForNotification(task);
 
-    private String formatTask(Task task) {
-        StringBuilder msg = new StringBuilder();
-        msg.append(String.format("\nЗадание '%s' | %s | до %s | %s",
-                task.getName(),
-                task.getDescription(),
-                task.getDeadline().toString(),
-                task.getStatus() ? "Сделано" : "Надо сделать"));
-        msg.append("\n---\n");
-        return String.format("Напоминаю <3\nУ Вас есть нерешённая задача: %s", msg);
+        if (msg != null) {
+            telegramService.sendMessage(user.getTelegramId(), msg);
+        }
     }
 }

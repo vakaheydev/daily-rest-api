@@ -1,4 +1,4 @@
-package com.vaka.daily.abstraction;
+package com.vaka.daily.service.abstraction;
 
 import java.util.List;
 

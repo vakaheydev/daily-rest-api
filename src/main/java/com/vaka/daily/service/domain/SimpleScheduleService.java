@@ -1,15 +1,13 @@
-package com.vaka.daily.service;
+package com.vaka.daily.service.domain;
 
 import com.vaka.daily.domain.Schedule;
 import com.vaka.daily.domain.User;
-import com.vaka.daily.domain.dto.ScheduleDto;
 import com.vaka.daily.exception.ScheduleNotFoundException;
 import com.vaka.daily.exception.UserNotFoundException;
 import com.vaka.daily.repository.ScheduleRepository;
 import com.vaka.daily.repository.UserRepository;
 import jakarta.validation.ValidationException;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

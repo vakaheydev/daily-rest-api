@@ -1,4 +1,4 @@
-package com.vaka.daily.service;
+package com.vaka.daily.service.domain;
 
 import com.vaka.daily.domain.UserType;
 import com.vaka.daily.exception.UserTypeNotFoundException;

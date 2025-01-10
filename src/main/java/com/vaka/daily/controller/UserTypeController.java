@@ -2,7 +2,7 @@ package com.vaka.daily.controller;
 
 import com.vaka.daily.domain.UserType;
 import com.vaka.daily.exception.ValidationException;
-import com.vaka.daily.service.UserTypeService;
+import com.vaka.daily.service.domain.UserTypeService;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;

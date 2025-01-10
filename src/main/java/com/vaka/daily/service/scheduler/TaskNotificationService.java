@@ -1,4 +1,4 @@
-package com.vaka.daily.service;
+package com.vaka.daily.service.scheduler;
 
 import com.vaka.daily.domain.Task;
 import com.vaka.daily.repository.TaskRepository;

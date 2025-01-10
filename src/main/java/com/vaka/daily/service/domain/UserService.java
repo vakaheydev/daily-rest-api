@@ -1,8 +1,8 @@
-package com.vaka.daily.service;
+package com.vaka.daily.service.domain;
 
-import com.vaka.daily.abstraction.CommonService;
 import com.vaka.daily.domain.User;
 import com.vaka.daily.domain.dto.UserDto;
+import com.vaka.daily.service.abstraction.CommonService;
 
 import java.util.List;
 

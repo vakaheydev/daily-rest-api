@@ -2,7 +2,7 @@ package com.vaka.daily.controller;
 
 import com.vaka.daily.domain.TaskType;
 import com.vaka.daily.exception.ValidationException;
-import com.vaka.daily.service.TaskTypeService;
+import com.vaka.daily.service.domain.TaskTypeService;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -46,7 +46,7 @@ public class TaskTypeController {
             throw new ValidationException(bindingResult);
         }
 
-        return ResponseEntity.ok(taskTypeService.updateById(id,  taskType));
+        return ResponseEntity.ok(taskTypeService.updateById(id, taskType));
     }
 
     @DeleteMapping("/{id}")

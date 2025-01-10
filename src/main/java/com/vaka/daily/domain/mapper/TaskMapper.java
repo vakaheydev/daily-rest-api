@@ -2,8 +2,8 @@ package com.vaka.daily.domain.mapper;
 
 import com.vaka.daily.domain.Task;
 import com.vaka.daily.domain.dto.TaskDto;
-import com.vaka.daily.service.ScheduleService;
-import com.vaka.daily.service.TaskTypeService;
+import com.vaka.daily.service.domain.ScheduleService;
+import com.vaka.daily.service.domain.TaskTypeService;
 import org.springframework.stereotype.Component;
 
 @Component

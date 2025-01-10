@@ -3,7 +3,7 @@ package com.vaka.daily.controller;
 import com.vaka.daily.domain.User;
 import com.vaka.daily.domain.dto.UserDto;
 import com.vaka.daily.exception.ValidationException;
-import com.vaka.daily.service.UserService;
+import com.vaka.daily.service.domain.UserService;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -9,7 +9,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.vaka.daily.domain.Schedule;
 import com.vaka.daily.domain.Task;
 import com.vaka.daily.domain.User;
-import com.vaka.daily.service.UserService;
+import com.vaka.daily.service.domain.UserService;
 
 import java.io.IOException;
 import java.time.LocalDateTime;

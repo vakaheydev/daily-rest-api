@@ -1,11 +1,9 @@
-package com.vaka.daily.service;
+package com.vaka.daily.service.domain;
 
 import com.vaka.daily.domain.Task;
-import com.vaka.daily.domain.dto.TaskDto;
 import com.vaka.daily.exception.TaskNotFoundException;
 import com.vaka.daily.repository.TaskRepository;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
