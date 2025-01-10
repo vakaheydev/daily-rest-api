@@ -20,7 +20,7 @@ public class UserNotification {
     private LocalDateTime lastNotifiedAt;
 
     @OneToOne
-    @JoinColumn(name = "id_user")
+    @JoinColumn(name = "id_user", unique = true)
     @JsonIgnore
     private User user;
 }

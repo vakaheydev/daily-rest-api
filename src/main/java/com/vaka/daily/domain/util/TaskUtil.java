@@ -14,6 +14,10 @@ public class TaskUtil {
         return isTaskType(task, "repetitive");
     }
 
+    public static boolean isTaskRegular(Task task) {
+        return isTaskType(task, "regular");
+    }
+
     public static boolean isTaskType(Task task, String taskTypeName) {
         return task.getTaskType().getName().equals(taskTypeName);
     }

@@ -16,15 +16,20 @@ public class FormatTaskService {
         String formattedTask = formatTask(task);
         String msg;
 
-        if (isTaskRepetitive(task)) {
+        if (isTaskSingular(task)) {
+            msg = String.format("Напоминание\n\nУ Вас есть нерешённая задача: %s", formattedTask);
+        } else if (isTaskRegular(task)) {
+            msg = String.format("Не забудьте!\n\n%s", formattedTask);
+        } else if (isTaskRepetitive(task)) {
             if (isTaskDeadLineLater(task)) {
-                msg = String.format("Вы забыли выполнить регулярное задание\n\n%s", formattedTask);
+                msg = String.format("Не забудьте!\n\n%s", formattedTask);
             } else {
-                msg = String.format("Не забудьте!\n\nСкоро нужно будет: %s", formattedTask);
+                msg = String.format("Вы забыли выполнить регулярное задание\n\n%s", formattedTask);
             }
         } else {
-            msg = String.format("Напоминание\n\nУ Вас есть нерешённая задача: %s", formattedTask);
+            throw new IllegalArgumentException("Incorrect task type: " + task.getTaskType());
         }
+
 
         return msg;
     }
