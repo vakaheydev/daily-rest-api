@@ -16,11 +16,11 @@ public class NotificationScheduler implements SchedulingConfigurer {
     @Value("${notification.loop}")
     private Integer secondsLoop;
 
+    private final SchedulerService service;
+
     public NotificationScheduler(SchedulerService service) {
         this.service = service;
     }
-
-    private final SchedulerService service;
 
     @Override
     public void configureTasks(ScheduledTaskRegistrar taskRegistrar) {
