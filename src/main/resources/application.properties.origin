@@ -1,17 +1,16 @@
 # ============================
 #         Data Source
 # ============================
-
-spring.datasource.url =
-spring.datasource.username =
-spring.datasource.password =
-spring.datasource.driver-class-name =
+spring.datasource.url=jdbc:postgresql://localhost:5433/vaka_daily_db
+spring.datasource.username=
+spring.datasource.password=
+spring.datasource.driver-class-name=org.postgresql.Driver
 
 # ============================
-#          Hibernate
+#             JPA
 # ============================
-spring.jpa.hibernate.ddl-auto = none
-
+spring.jpa.hibernate.ddl-auto=none
+spring.jpa.properties.hibernate.event.merge.entity_copy_observer=allow
 
 # ============================
 #           Logging
@@ -20,13 +19,16 @@ logging.level.org.springframework.web.filter.CommonsRequestLoggingFilter=WARN
 logging.level.org.springframework.http.converter.json=DEBUG
 logging.level.com.vaka.daily=DEBUG
 
-
 # ============================
 #           Telegram
 # ============================
 telegram.bot.url=http://localhost:8888/api
 telegram.enabled=false
 
+# ============================
+#         Notification
+# ============================
+notification.loop=60
 
 # ============================
 #           Jackson

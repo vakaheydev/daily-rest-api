@@ -1,8 +1,7 @@
 package com.vaka.daily.domain;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIdentityInfo;
-import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+import com.fasterxml.jackson.annotation.*;
+import com.fasterxml.jackson.databind.ser.std.ObjectArraySerializer;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
@@ -10,6 +9,7 @@ import jakarta.validation.constraints.Size;
 import lombok.*;
 
 import java.time.LocalDateTime;
+import java.util.Objects;
 
 @Entity
 @Table(name = "Task", uniqueConstraints = {@UniqueConstraint(columnNames = {"task_name", "task_description",
@@ -54,7 +54,22 @@ public class Task {
     @NotNull
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.MERGE)
     @JoinColumn(name = "id_task_type")
+    @JsonIgnore
     private TaskType taskType;
+
+    @JsonProperty("scheduleId")
+    public Integer getScheduleId() {
+        Objects.requireNonNull(schedule);
+
+        return schedule.getId();
+    };
+
+    @JsonProperty("taskTypeId")
+    public Integer getTaskTypeId() {
+        Objects.requireNonNull(taskType);
+
+        return taskType.getId();
+    }
 
     @Override
     public String toString() {
