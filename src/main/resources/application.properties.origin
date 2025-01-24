@@ -1,9 +1,13 @@
 # ============================
+#           Server
+# ============================
+server.port=${REST_API_PORT:8080}
+# ============================
 #         Data Source
 # ============================
-spring.datasource.url=jdbc:postgresql://localhost:5433/vaka_daily_db
-spring.datasource.username=
-spring.datasource.password=
+spring.datasource.url=jdbc:postgresql://${DB_HOST}:${DB_PORT}/${DB_NAME}
+spring.datasource.username=${DB_USERNAME}
+spring.datasource.password=${DB_PASSWORD}
 spring.datasource.driver-class-name=org.postgresql.Driver
 
 # ============================
@@ -22,13 +26,13 @@ logging.level.com.vaka.daily=DEBUG
 # ============================
 #           Telegram
 # ============================
-telegram.bot.url=http://localhost:8888/api
-telegram.enabled=false
+telegram.bot.url=http://${TG_BOT_HOST:localhost}:${TG_BOT_PORT:8888}/api
+telegram.enabled=${TG_BOT_ENABLED:true}
 
 # ============================
 #         Notification
 # ============================
-notification.loop=60
+notification.loop=${REST_API_NOTIFICATION_LOOP:60}
 
 # ============================
 #           Jackson

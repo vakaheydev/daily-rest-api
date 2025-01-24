@@ -106,15 +106,26 @@ public class NotificationService {
     }
 
     private void notifyUserByTelegram(User user, List<Task> tasks) {
-        if (!telegramEnabled || user.getTelegramId() == null) {
+        if (!telegramEnabled) {
+            log.info("Telegram is disabled");
             return;
         }
+
+        if (user.getTelegramId() == null) {
+            return;
+        }
+
+        boolean messageSent = false;
 
         for (Task task : tasks) {
             if (shouldNotify(user, task)) {
                 String msg = formatTaskService.formatTaskForNotification(task);
-                telegramService.sendMessage(user.getTelegramId(), msg);
+                messageSent = telegramService.sendMessage(user.getTelegramId(), msg);
             }
+        }
+
+        if (!messageSent) {
+            return;
         }
 
         try {

@@ -14,12 +14,15 @@ public class TelegramService {
         this.telegramClient = telegramClient;
     }
 
-    public void sendMessage(long telegramId, String message) {
+    public boolean sendMessage(long telegramId, String message) {
         try {
             telegramClient.sendMessage(telegramId, message);
             log.debug("Sent message to tgId={}", telegramId);
+            return true;
         } catch (ResourceAccessException ex) {
             log.error("Telegram bot isn't available");
         }
+
+        return false;
     }
 }
