@@ -8,6 +8,22 @@
 - **Планирование задач**: Привязка сроков и напоминаний к задачам.
 - **Операции CRUD**: Создание, чтение, обновление и удаление сущностей через API.
 
+## Проект с несколькими репозиториями
+
+Проект состоит из четырёх связанных репозиториев:
+
+1. **[REST API](https://github.com/vakaheydev/daily-rest-api)**  
+   Репозиторий REST API, которое предоставляет функциональность для управления задачами (CRUD операции с задачами, пользователями и другими сущностями) и отправки уведомлений в [Телеграм бот](https://github.com/vakaheydev/daily-tgbot).
+
+2. **[Client](https://github.com/vakaheydev/daily-rest-client)**  
+   Репозиторий клиента для работы с REST API. Включает классы и методы для удобной работы с API через HTTP-запросы.
+
+3. **[MVC](https://github.com/vakaheydev/daily-ьмс)**  
+   Репозиторий MVC сайта, использующее [клиент](https://github.com/vakaheydev/daily-rest-client) для взаимодействия с [REST API](https://github.com/vakaheydev/daily-rest-api). Предоставляет веб-интерфейс для управления задачами через браузер.
+
+4. **[Telegram Bot](https://github.com/vakaheydev/daily-tgbot)**  
+   Репозиторий Telegram-бота, который использует [клиент](https://github.com/vakaheydev/daily-rest-client) для работы с [REST API](https://github.com/vakaheydev/daily-rest-api). Позволяет пользователям управлять задачами и получать уведомления через Telegram.
+
 ## Установка
 
 Проект контейнеризован с использованием Docker, что позволяет быстро и удобно осуществить запуск всех сервисов (REST API, MVC, Telegram-бот) локально.
