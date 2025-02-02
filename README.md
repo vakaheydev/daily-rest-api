@@ -17,7 +17,7 @@
    Репозиторий REST API, которое предоставляет функциональность для управления задачами (CRUD операции с задачами, пользователями и другими сущностями) и отправки уведомлений в [Телеграм бот](https://github.com/vakaheydev/daily-tgbot).
 
 2. **[Client](https://github.com/vakaheydev/daily-rest-client)**  
-   Репозиторий клиента для работы с REST API. Включает классы и методы для удобной работы с API через HTTP-запросы.
+   Репозиторий клиента для работы с [REST API](https://github.com/vakaheydev/daily-rest-api). Включает классы и методы для удобной работы с API через HTTP-запросы.
 
 3. **[MVC](https://github.com/vakaheydev/daily-ьмс)**  
    Репозиторий MVC сайта, использующий [клиент](https://github.com/vakaheydev/daily-rest-client) для взаимодействия с [REST API](https://github.com/vakaheydev/daily-rest-api). Предоставляет веб-интерфейс для управления задачами через браузер.
