@@ -2,9 +2,9 @@ package com.vaka.daily.service.scheduler;
 
 import com.vaka.daily.domain.Task;
 import com.vaka.daily.domain.User;
-import com.vaka.daily.domain.UserNotification;
+import com.vaka.daily.domain.TaskNotification;
 import com.vaka.daily.exception.UserNotFoundException;
-import com.vaka.daily.service.domain.UserNotificationService;
+import com.vaka.daily.service.domain.TaskNotificationService;
 import com.vaka.daily.service.scheduler.format.FormatTaskService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -25,14 +25,14 @@ public class NotificationService {
     @Value("${telegram.enabled}")
     private boolean telegramEnabled;
     private final TelegramService telegramService;
-    private final TaskNotificationService notificationService;
+    private final com.vaka.daily.service.scheduler.TaskNotificationService notificationService;
     private final FormatTaskService formatTaskService;
 
-    private final UserNotificationService userNotificationService;
+    private final TaskNotificationService userNotificationService;
 
     public NotificationService(TelegramService telegramService,
-                               TaskNotificationService notificationService, FormatTaskService formatTaskService,
-                               UserNotificationService userNotificationService) {
+                               com.vaka.daily.service.scheduler.TaskNotificationService notificationService, FormatTaskService formatTaskService,
+                               TaskNotificationService userNotificationService) {
         this.telegramService = telegramService;
         this.notificationService = notificationService;
         this.formatTaskService = formatTaskService;
@@ -54,10 +54,10 @@ public class NotificationService {
     }
 
     private boolean shouldNotify(User user, Task task) {
-        UserNotification userNotification;
+        TaskNotification userNotification;
 
         try {
-            userNotification = userNotificationService.getByUserId(user.getId());
+            userNotification = userNotificationService.getByTaskId(task.getId());
         } catch (UserNotFoundException ex) {
             return true;
         }
@@ -129,12 +129,12 @@ public class NotificationService {
         }
 
         try {
-            UserNotification userNotification = userNotificationService.getByUserId(user.getId());
+            TaskNotification userNotification = userNotificationService.getByUserId(user.getId());
             userNotification.setLastNotifiedAt(LocalDateTime.now());
 
             userNotificationService.updateById(userNotification.getId(), userNotification);
         } catch (UserNotFoundException ex) {
-            UserNotification userNotification = new UserNotification();
+            TaskNotification userNotification = new TaskNotification();
             userNotification.setUser(user);
             userNotification.setLastNotifiedAt(LocalDateTime.now());
 

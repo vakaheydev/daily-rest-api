@@ -1,45 +1,45 @@
 package com.vaka.daily.service.domain;
 
-import com.vaka.daily.domain.UserNotification;
-import com.vaka.daily.exception.UserNotFoundException;
-import com.vaka.daily.exception.UserNotificationNotFoundException;
-import com.vaka.daily.repository.UserNotificationRepository;
+import com.vaka.daily.domain.TaskNotification;
+import com.vaka.daily.exception.TaskNotFoundException;
+import com.vaka.daily.exception.TaskNotificationNotFoundException;
+import com.vaka.daily.repository.TaskNotificationRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
-public class SimpleUserNotificationService implements UserNotificationService {
-    private final UserNotificationRepository repository;
+public class SimpleUserNotificationService implements TaskNotificationService {
+    private final TaskNotificationRepository repository;
 
-    public SimpleUserNotificationService(UserNotificationRepository repository) {
+    public SimpleUserNotificationService(TaskNotificationRepository repository) {
         this.repository = repository;
     }
 
     @Override
-    public List<UserNotification> getAll() {
+    public List<TaskNotification> getAll() {
         return repository.findAll();
     }
 
     @Override
-    public UserNotification getById(Integer id) {
-        return repository.findById(id).orElseThrow(() -> new UserNotificationNotFoundException(id));
+    public TaskNotification getById(Integer id) {
+        return repository.findById(id).orElseThrow(() -> new TaskNotificationNotFoundException(id));
     }
 
     @Override
-    public UserNotification getByUserId(Integer userId) {
-        return repository.findByUserId(userId).orElseThrow(() -> new UserNotFoundException(userId));
+    public TaskNotification getByTaskId(Integer taskId) {
+        return repository.findByTaskId(taskId).orElseThrow(() -> new TaskNotFoundException(taskId));
     }
 
     @Override
-    public UserNotification create(UserNotification entity) {
+    public TaskNotification create(TaskNotification entity) {
         return repository.save(entity);
     }
 
     @Override
-    public UserNotification updateById(Integer id, UserNotification entity) {
+    public TaskNotification updateById(Integer id, TaskNotification entity) {
         if (!repository.existsById(id)) {
-            throw new UserNotificationNotFoundException(id);
+            throw new TaskNotificationNotFoundException(id);
         }
 
         entity.setId(id);
@@ -49,7 +49,7 @@ public class SimpleUserNotificationService implements UserNotificationService {
     @Override
     public void deleteById(Integer id) {
         if (!repository.existsById(id)) {
-            throw new UserNotificationNotFoundException(id);
+            throw new TaskNotificationNotFoundException(id);
         }
 
         repository.deleteById(id);
