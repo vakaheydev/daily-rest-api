@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 
 import java.security.PrivateKey;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -51,10 +52,11 @@ public class SimpleScheduleService implements ScheduleService {
 
     @Override
     public Schedule createDefaultSchedule(User user) {
-        Schedule schedule = create(new Schedule("main", user));
+        Schedule schedule = new Schedule("main", user);
+        schedule.setTasks(new ArrayList<>());
         schedule.addTask(createDefaultTask(schedule));
 
-        return schedule;
+        return create(schedule);
     }
 
     @Override
@@ -70,6 +72,10 @@ public class SimpleScheduleService implements ScheduleService {
     public Schedule create(Schedule entity) {
         if (entity.getUser() == null) {
             throw new ValidationException("Schedule with null user");
+        }
+
+        if (entity.getTasks() == null) {
+            entity.setTasks(new ArrayList<>());
         }
 
         return scheduleRepository.save(entity);
@@ -101,6 +107,7 @@ public class SimpleScheduleService implements ScheduleService {
                 .deadline(LocalDateTime.now().plusDays(7))
                 .schedule(schedule)
                 .taskType(taskTypeRepository.findByName("singular").orElseThrow())
+                .status(false)
                 .build();
     }
 }
