@@ -14,12 +14,6 @@ CREATE TABLE IF NOT EXISTS Daily_User (
     id_user_type INTEGER REFERENCES User_Type (user_type_id)
 );
 
-CREATE TABLE IF NOT EXISTS User_Notification (
-    user_notification_id INTEGER GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
-    last_notified TIMESTAMP,
-    id_user INTEGER UNIQUE NOT NULL REFERENCES Daily_User (user_id)
-);
-
 CREATE TABLE IF NOT EXISTS Schedule (
     schedule_id INTEGER GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
     schedule_name VARCHAR(100) NOT NULL,
@@ -41,6 +35,12 @@ CREATE TABLE IF NOT EXISTS Task (
     id_schedule INTEGER REFERENCES Schedule (schedule_id),
     id_task_type INTEGER REFERENCES Task_Type (task_type_id),
     UNIQUE (task_name, task_description, id_schedule)
+);
+
+CREATE TABLE IF NOT EXISTS Task_Notification (
+     task_notification_id INTEGER GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+     last_notified TIMESTAMP,
+     id_task INTEGER UNIQUE NOT NULL REFERENCES Task (task_id)
 );
 
 

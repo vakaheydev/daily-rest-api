@@ -1,11 +1,11 @@
 package service;
 
 import com.vaka.daily.Application;
-import com.vaka.daily.domain.User;
-import com.vaka.daily.domain.UserNotification;
-import com.vaka.daily.repository.UserNotificationRepository;
-import com.vaka.daily.service.domain.UserNotificationService;
-import com.vaka.daily.service.domain.UserService;
+import com.vaka.daily.domain.Task;
+import com.vaka.daily.domain.TaskNotification;
+import com.vaka.daily.repository.TaskNotificationRepository;
+import com.vaka.daily.service.domain.TaskNotificationService;
+import com.vaka.daily.service.domain.TaskService;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import lombok.extern.slf4j.Slf4j;
@@ -25,22 +25,22 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 @SpringBootTest(classes = {Application.class})
 @Slf4j
 @Transactional
-public class UserNotificationServiceTest {
+public class TaskNotificationServiceTest {
     @Autowired
-    UserNotificationService userNotificationService;
+    TaskNotificationService taskNotificationService;
 
     @Autowired
-    UserService userService;
+    TaskService TaskService;
 
     @Autowired
-    UserNotificationRepository repo;
+    TaskNotificationRepository repo;
 
     @PersistenceContext
     private EntityManager entityManager;
 
     @BeforeEach
     public void setup() {
-        entityManager.createNativeQuery("alter sequence user_notification_user_notification_id_seq restart with " + getNewId())
+        entityManager.createNativeQuery("alter sequence task_notification_task_notification_id_seq restart with " + getNewId())
                 .executeUpdate();
     }
 
@@ -51,29 +51,29 @@ public class UserNotificationServiceTest {
     @DisplayName("Should create new notification")
     @Test
     public void shouldCreate() {
-        User user = userService.getById(1);
-        UserNotification userNotification = new UserNotification();
+        Task Task = TaskService.getById(1);
+        TaskNotification taskNotification = new TaskNotification();
 
-        userNotification.setUser(user);
-        userNotification.setLastNotifiedAt(LocalDateTime.now());
+        taskNotification.setTask(Task);
+        taskNotification.setLastNotifiedAt(LocalDateTime.now());
 
-        userNotificationService.create(userNotification);
+        taskNotificationService.create(taskNotification);
 
-        UserNotification byUserId = userNotificationService.getByUserId(1);
+        TaskNotification byTaskId = taskNotificationService.getByTaskId(1);
 
-        log.info(byUserId.toString());
-        assertNotNull(byUserId);
+        log.info(byTaskId.toString());
+        assertNotNull(byTaskId);
 
-        UserNotification byId = userNotificationService.getById(1);
+        TaskNotification byId = taskNotificationService.getById(1);
         log.info(byId.toString());
 
         assertNotNull(byId);
 
-        List<UserNotification> notifications = userNotificationService.getAll();
+        List<TaskNotification> notifications = taskNotificationService.getAll();
 
         assertEquals(1, notifications.size());
         assertEquals(1, notifications.get(0).getId());
 
-        assertEquals(userNotification.getLastNotifiedAt(), userNotificationService.getById(1).getLastNotifiedAt());
+        assertEquals(taskNotification.getLastNotifiedAt(), taskNotificationService.getById(1).getLastNotifiedAt());
     }
 }
