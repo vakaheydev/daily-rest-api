@@ -2,10 +2,8 @@ package repository;
 
 import com.vaka.daily.Application;
 import com.vaka.daily.domain.Task;
-import com.vaka.daily.repository.TaskRepository;
+import com.vaka.daily.repository.TaskNotificationRepository;
 import lombok.extern.slf4j.Slf4j;
-import org.hibernate.Hibernate;
-import org.hibernate.annotations.DialectOverride;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -19,9 +17,9 @@ import java.util.List;
 @SpringBootTest(classes = {Application.class})
 @Slf4j
 @Transactional
-public class TaskRepositoryTest {
+public class TaskNotificationRepositoryTest {
     @Autowired
-    TaskRepository taskRepository;
+    TaskNotificationRepository taskRepository;
 
     @DisplayName("Get tasks for notification (not completed and deadline > now)")
     @Test

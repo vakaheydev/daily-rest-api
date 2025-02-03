@@ -7,19 +7,19 @@ import lombok.Data;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "User_Notification")
+@Table(name = "Task_Notification")
 @Data
-public class UserNotification {
+public class TaskNotification {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "user_notification_id")
+    @Column(name = "task_notification_id")
     private Integer id;
 
     @Column(name = "last_notified")
     private LocalDateTime lastNotifiedAt;
 
     @OneToOne
-    @JoinColumn(name = "id_user", unique = true)
+    @JoinColumn(name = "id_task", unique = true)
     @JsonIgnore
-    private User user;
+    private Task task;
 }
