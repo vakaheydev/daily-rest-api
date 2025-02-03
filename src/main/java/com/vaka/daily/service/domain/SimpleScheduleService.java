@@ -1,15 +1,21 @@
 package com.vaka.daily.service.domain;
 
 import com.vaka.daily.domain.Schedule;
+import com.vaka.daily.domain.Task;
+import com.vaka.daily.domain.TaskType;
 import com.vaka.daily.domain.User;
 import com.vaka.daily.exception.ScheduleNotFoundException;
 import com.vaka.daily.exception.UserNotFoundException;
 import com.vaka.daily.repository.ScheduleRepository;
+import com.vaka.daily.repository.TaskTypeRepository;
 import com.vaka.daily.repository.UserRepository;
 import jakarta.validation.ValidationException;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.security.PrivateKey;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -17,10 +23,14 @@ import java.util.List;
 public class SimpleScheduleService implements ScheduleService {
     private final ScheduleRepository scheduleRepository;
     private final UserRepository userRepository;
+    private final TaskTypeRepository taskTypeRepository;
 
-    public SimpleScheduleService(ScheduleRepository scheduleRepository, UserRepository userRepository) {
+    @Autowired
+    public SimpleScheduleService(ScheduleRepository scheduleRepository, UserRepository userRepository,
+                                 TaskTypeRepository taskTypeRepository) {
         this.scheduleRepository = scheduleRepository;
         this.userRepository = userRepository;
+        this.taskTypeRepository = taskTypeRepository;
     }
 
     @Override
@@ -42,6 +52,7 @@ public class SimpleScheduleService implements ScheduleService {
     @Override
     public Schedule createDefaultSchedule(User user) {
         Schedule schedule = create(new Schedule("main", user));
+        schedule.addTask(createDefaultTask(schedule));
 
         return schedule;
     }
@@ -81,5 +92,15 @@ public class SimpleScheduleService implements ScheduleService {
         }
 
         scheduleRepository.deleteById(id);
+    }
+
+    private Task createDefaultTask(Schedule schedule) {
+        return Task.builder()
+                .name("First task")
+                .description("Let's do something great!")
+                .deadline(LocalDateTime.now().plusDays(7))
+                .schedule(schedule)
+                .taskType(taskTypeRepository.findByName("singular").orElseThrow())
+                .build();
     }
 }

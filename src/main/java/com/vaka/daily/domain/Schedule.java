@@ -56,4 +56,8 @@ public class Schedule {
         this.name = name;
         this.user = user;
     }
+
+    public void addTask(Task task) {
+        tasks.add(task);
+    }
 }
