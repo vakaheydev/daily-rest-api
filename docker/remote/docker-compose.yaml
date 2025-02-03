@@ -1,7 +1,6 @@
 services:
   rest-api:
     container_name: rest-api
-    build: ./rest-api
     image: vakadev/daily-rest-api:latest
     environment:
       DB_HOST: db
@@ -22,11 +21,10 @@ services:
       - "${REST_API_PORT}:8080"
     depends_on:
       - db
-    
-    
+
+
   mvc:
     container_name: mvc
-    build: ./mvc
     image: vakadev/daily-mvc:latest
     environment:
       REST_API_HOST: rest-api
@@ -37,10 +35,9 @@ services:
       - "${MVC_PORT}:8081"
     depends_on:
       - rest-api
-   
+
   tg-bot:
     container_name: tg-bot
-    build: ./tg-bot
     image: vakadev/daily-tg-bot:latest
     environment:
       REST_API_HOST: rest-api
@@ -52,11 +49,10 @@ services:
       - "${TG_BOT_PORT}:8888"
     depends_on:
       - rest-api
-    
+
 
   db:
     container_name: db
-    build: ./db
     image: vakadev/daily-db:latest
     restart: always
     environment:
@@ -67,6 +63,6 @@ services:
       - "5432:5432"
     volumes:
       - postgres:/var/lib/postgresql/data
-  
+
 volumes:
   postgres:
