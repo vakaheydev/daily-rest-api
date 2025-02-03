@@ -57,6 +57,9 @@ public class Task {
     @JsonIgnore
     private TaskType taskType;
 
+    @OneToOne(mappedBy = "task", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
+    private TaskNotification taskNotification;
+
     @JsonProperty("scheduleId")
     public Integer getScheduleId() {
         Objects.requireNonNull(schedule);

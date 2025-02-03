@@ -3,10 +3,13 @@ package com.vaka.daily.service.scheduler;
 import com.vaka.daily.domain.Task;
 import com.vaka.daily.domain.User;
 import com.vaka.daily.domain.TaskNotification;
+import com.vaka.daily.exception.TaskNotFoundException;
+import com.vaka.daily.exception.TaskNotificationNotFoundException;
 import com.vaka.daily.exception.UserNotFoundException;
 import com.vaka.daily.service.domain.TaskNotificationService;
 import com.vaka.daily.service.scheduler.format.FormatTaskService;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -25,23 +28,21 @@ public class NotificationService {
     @Value("${telegram.enabled}")
     private boolean telegramEnabled;
     private final TelegramService telegramService;
-    private final com.vaka.daily.service.scheduler.TaskNotificationService notificationService;
     private final FormatTaskService formatTaskService;
 
-    private final TaskNotificationService userNotificationService;
+    private final TaskNotificationService taskNotificationService;
 
+    @Autowired
     public NotificationService(TelegramService telegramService,
-                               com.vaka.daily.service.scheduler.TaskNotificationService notificationService, FormatTaskService formatTaskService,
-                               TaskNotificationService userNotificationService) {
+                               FormatTaskService formatTaskService, TaskNotificationService userNotificationService) {
         this.telegramService = telegramService;
-        this.notificationService = notificationService;
         this.formatTaskService = formatTaskService;
-        this.userNotificationService = userNotificationService;
+        this.taskNotificationService = userNotificationService;
     }
 
     @Transactional
     public void notifyUsers() {
-        List<Task> tasksForNotification = notificationService.getTasksForNotification();
+        List<Task> tasksForNotification = taskNotificationService.getTasksForNotification();
         Map<User, List<Task>> userTasksMap = tasksForNotification.stream()
                 .collect(Collectors.groupingBy((task -> task.getSchedule().getUser())));
 
@@ -49,20 +50,40 @@ public class NotificationService {
             User user = entry.getKey();
             List<Task> tasks = entry.getValue();
 
+            if (!telegramEnabled) {
+                log.info("Telegram is disabled");
+                break;
+            }
+
             notifyUserByTelegram(user, tasks);
         }
     }
 
+    private void postTaskNotification(Task task) {
+        try {
+            TaskNotification taskNotification = taskNotificationService.getByTaskId(task.getId());
+            taskNotification.setLastNotifiedAt(LocalDateTime.now());
+
+            taskNotificationService.updateById(taskNotification.getId(), taskNotification);
+        } catch (TaskNotFoundException ex) {
+            TaskNotification taskNotification = new TaskNotification();
+            taskNotification.setTask(task);
+            taskNotification.setLastNotifiedAt(LocalDateTime.now());
+
+            taskNotificationService.create(taskNotification);
+        }
+    }
+
     private boolean shouldNotify(User user, Task task) {
-        TaskNotification userNotification;
+        TaskNotification taskNotification;
 
         try {
-            userNotification = userNotificationService.getByTaskId(task.getId());
-        } catch (UserNotFoundException ex) {
+            taskNotification = taskNotificationService.getByTaskId(task.getId());
+        } catch (TaskNotFoundException ex) {
             return true;
         }
 
-        LocalDateTime lastNotified = userNotification.getLastNotifiedAt();
+        LocalDateTime lastNotified = taskNotification.getLastNotifiedAt();
 
         if (isTaskSingular(task)) {
             int daysFromLastNotified = getDaysFrom(lastNotified);
@@ -106,39 +127,21 @@ public class NotificationService {
     }
 
     private void notifyUserByTelegram(User user, List<Task> tasks) {
-        if (!telegramEnabled) {
-            log.info("Telegram is disabled");
-            return;
-        }
-
         if (user.getTelegramId() == null) {
             return;
         }
 
-        boolean messageSent = false;
-
         for (Task task : tasks) {
             if (shouldNotify(user, task)) {
                 String msg = formatTaskService.formatTaskForNotification(task);
-                messageSent = telegramService.sendMessage(user.getTelegramId(), msg);
+                boolean messageSent = telegramService.sendMessage(user.getTelegramId(), msg);
+
+                if (!messageSent) {
+                    continue;
+                }
+
+                postTaskNotification(task);
             }
-        }
-
-        if (!messageSent) {
-            return;
-        }
-
-        try {
-            TaskNotification userNotification = userNotificationService.getByUserId(user.getId());
-            userNotification.setLastNotifiedAt(LocalDateTime.now());
-
-            userNotificationService.updateById(userNotification.getId(), userNotification);
-        } catch (UserNotFoundException ex) {
-            TaskNotification userNotification = new TaskNotification();
-            userNotification.setUser(user);
-            userNotification.setLastNotifiedAt(LocalDateTime.now());
-
-            userNotificationService.create(userNotification);
         }
     }
 }

@@ -1,18 +1,20 @@
 package com.vaka.daily.service.domain;
 
+import com.vaka.daily.domain.Task;
 import com.vaka.daily.domain.TaskNotification;
 import com.vaka.daily.exception.TaskNotFoundException;
 import com.vaka.daily.exception.TaskNotificationNotFoundException;
 import com.vaka.daily.repository.TaskNotificationRepository;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
-public class SimpleUserNotificationService implements TaskNotificationService {
+public class SimpleTaskNotificationService implements TaskNotificationService {
     private final TaskNotificationRepository repository;
 
-    public SimpleUserNotificationService(TaskNotificationRepository repository) {
+    public SimpleTaskNotificationService(TaskNotificationRepository repository) {
         this.repository = repository;
     }
 
@@ -53,5 +55,10 @@ public class SimpleUserNotificationService implements TaskNotificationService {
         }
 
         repository.deleteById(id);
+    }
+
+    @Override
+    public List<Task> getTasksForNotification() {
+        return repository.findTasksForNotification(LocalDateTime.now());
     }
 }

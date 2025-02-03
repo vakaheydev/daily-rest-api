@@ -9,12 +9,6 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 public interface TaskRepository extends JpaRepository<Task, Integer> {
-
-    @Query("select t from Task t where " +
-            "(t.status = false and t.deadline > :now) or " +
-            "(t.status = false and t.taskType.id = 2)")
-    List<Task> findTasksForNotification(@Param("now") LocalDateTime now);
-
     @Query("select t from Task t where t.status = false and t.deadline < :now")
     List<Task> findExpiredTasks(@Param("now") LocalDateTime now);
 }
