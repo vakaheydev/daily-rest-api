@@ -11,10 +11,10 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
-public class SimpleTaskNotificationService implements TaskNotificationService {
+public class TaskNotificationServiceImpl implements TaskNotificationService {
     private final TaskNotificationRepository repository;
 
-    public SimpleTaskNotificationService(TaskNotificationRepository repository) {
+    public TaskNotificationServiceImpl(TaskNotificationRepository repository) {
         this.repository = repository;
     }
 

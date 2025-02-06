@@ -11,11 +11,11 @@ import java.util.List;
 
 @Service
 @Slf4j
-public class SimpleUserTypeService implements UserTypeService {
+public class UserTypeServiceImpl implements UserTypeService {
     private final UserTypeRepository repository;
 
     @Autowired
-    public SimpleUserTypeService(UserTypeRepository repository) {
+    public UserTypeServiceImpl(UserTypeRepository repository) {
         this.repository = repository;
     }
 

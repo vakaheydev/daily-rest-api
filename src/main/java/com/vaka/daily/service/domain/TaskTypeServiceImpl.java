@@ -8,10 +8,10 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public class SimpleTaskTypeService implements TaskTypeService {
+public class TaskTypeServiceImpl implements TaskTypeService {
     private TaskTypeRepository taskTypeRepository;
 
-    public SimpleTaskTypeService(TaskTypeRepository taskTypeRepository) {
+    public TaskTypeServiceImpl(TaskTypeRepository taskTypeRepository) {
         this.taskTypeRepository = taskTypeRepository;
     }
 

@@ -44,4 +44,9 @@ CREATE TABLE IF NOT EXISTS Task_Notification (
 );
 
 
-
+CREATE TABLE IF NOT EXISTS Binding_Token (
+    token_id INTEGER GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+    created_at TIMESTAMP NOT NULL,
+    token_value varchar(64) NOT NULL CONSTRAINT UQ_Token_Value UNIQUE,
+    id_user INTEGER REFERENCES Daily_User (user_id) NOT NULL CONSTRAINT UQ_Id_User UNIQUE
+);

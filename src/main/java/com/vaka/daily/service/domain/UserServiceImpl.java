@@ -15,17 +15,17 @@ import java.util.List;
 
 @Service
 @Slf4j
-public class SimpleUserService implements UserService {
+public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
     private final UserTypeService userTypeService;
     private final ScheduleService scheduleService;
     private final TelegramClient telegramClient;
 
     @Autowired
-    public SimpleUserService(UserRepository userRepository,
-                             UserTypeService userTypeService,
-                             ScheduleService scheduleService,
-                             TelegramClient telegramClient) {
+    public UserServiceImpl(UserRepository userRepository,
+                           UserTypeService userTypeService,
+                           ScheduleService scheduleService,
+                           TelegramClient telegramClient) {
         this.userRepository = userRepository;
         this.userTypeService = userTypeService;
         this.scheduleService = scheduleService;
