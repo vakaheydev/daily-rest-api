@@ -61,6 +61,10 @@ public class User {
     @Column(name = "user_telegram_id", unique = true)
     private Long telegramId;
 
+    public User(Integer id) {
+        this.id = id;
+    }
+
     public User(Integer id, String login, String password, String firstName, String secondName, String patronymic,
                 UserType userType, Long telegramId) {
         this.id = id;

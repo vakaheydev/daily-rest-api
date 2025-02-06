@@ -6,6 +6,7 @@ import com.vaka.daily.domain.UserType;
 import com.vaka.daily.domain.dto.UserDto;
 import com.vaka.daily.exception.UserNotFoundException;
 import com.vaka.daily.repository.UserRepository;
+import com.vaka.daily.telegram.TelegramClient;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -14,17 +15,21 @@ import java.util.List;
 
 @Service
 @Slf4j
-public class SimpleUserService implements UserService {
+public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
     private final UserTypeService userTypeService;
     private final ScheduleService scheduleService;
+    private final TelegramClient telegramClient;
 
     @Autowired
-    public SimpleUserService(UserRepository userRepository, UserTypeService userTypeService,
-                             ScheduleService scheduleService) {
+    public UserServiceImpl(UserRepository userRepository,
+                           UserTypeService userTypeService,
+                           ScheduleService scheduleService,
+                           TelegramClient telegramClient) {
         this.userRepository = userRepository;
         this.userTypeService = userTypeService;
         this.scheduleService = scheduleService;
+        this.telegramClient = telegramClient;
     }
 
     @Override
@@ -83,11 +88,14 @@ public class SimpleUserService implements UserService {
 
     @Override
     public User updateById(Integer id, User entity) {
-        if (!userRepository.existsById(id)) {
-            throw new UserNotFoundException(id);
-        }
+        User oldUser = userRepository.findById(id).orElseThrow(() -> new UserNotFoundException(id));
 
         entity.setId(id);
+
+        if (oldUser.getTelegramId() == null && entity.getTelegramId() != null) {
+            telegramClient.sendMessage(entity.getTelegramId(), String.format("Рад знакомству, %s!\n\nТеперь я буду присылать Вам уведомления, чтобы Вы ничего не забыли <3\n\nПри вводе любого символа появляется меню бота",  entity.getLogin()));
+        }
+
         return userRepository.save(entity);
     }
 

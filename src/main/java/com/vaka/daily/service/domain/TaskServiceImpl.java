@@ -10,13 +10,13 @@ import java.util.List;
 
 @Service
 @Slf4j
-public class SimpleTaskService implements TaskService {
+public class TaskServiceImpl implements TaskService {
     private final TaskRepository taskRepository;
     private final ScheduleService scheduleService;
     private final TaskTypeService taskTypeService;
 
-    public SimpleTaskService(TaskRepository taskRepository, ScheduleService scheduleService,
-                             TaskTypeService taskTypeService) {
+    public TaskServiceImpl(TaskRepository taskRepository, ScheduleService scheduleService,
+                           TaskTypeService taskTypeService) {
         this.taskRepository = taskRepository;
         this.scheduleService = scheduleService;
         this.taskTypeService = taskTypeService;

@@ -11,7 +11,7 @@ import java.util.Set;
  * Common exception if object not found by ID, unique name or both
  */
 public abstract class ObjectNotFoundException extends RuntimeException {
-    private final Map<String, String> details = new HashMap<>();
+    protected final Map<String, String> details = new HashMap<>();
     @Getter
     protected final String objectName;
 

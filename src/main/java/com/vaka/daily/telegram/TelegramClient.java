@@ -16,7 +16,7 @@ public class TelegramClient {
 
     public void sendMessage(long chatId, String message) {
         restClient.post()
-                .uri(URL + "/" + chatId)
+                .uri(URL + "/message/" + chatId)
                 .body(message)
                 .retrieve()
                 .toBodilessEntity();
