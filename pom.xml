@@ -19,7 +19,9 @@
             </goals>
             <configuration>
               <classifier>spring-boot</classifier>
+              <!--suppress UnresolvedMavenProperty -->
               <mainClass>${com.vaka.daily.Application}</mainClass>
+              <finalName>rest-api</finalName>
             </configuration>
           </execution>
         </executions>
