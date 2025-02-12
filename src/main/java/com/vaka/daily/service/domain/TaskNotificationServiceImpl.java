@@ -2,8 +2,8 @@ package com.vaka.daily.service.domain;
 
 import com.vaka.daily.domain.Task;
 import com.vaka.daily.domain.TaskNotification;
-import com.vaka.daily.exception.TaskNotFoundException;
-import com.vaka.daily.exception.TaskNotificationNotFoundException;
+import com.vaka.daily.exception.notfound.TaskNotFoundException;
+import com.vaka.daily.exception.notfound.TaskNotificationNotFoundException;
 import com.vaka.daily.repository.TaskNotificationRepository;
 import org.springframework.stereotype.Service;
 
@@ -25,12 +25,12 @@ public class TaskNotificationServiceImpl implements TaskNotificationService {
 
     @Override
     public TaskNotification getById(Integer id) {
-        return repository.findById(id).orElseThrow(() -> new TaskNotificationNotFoundException(id));
+        return repository.findById(id).orElseThrow(() -> TaskNotificationNotFoundException.byId(id));
     }
 
     @Override
     public TaskNotification getByTaskId(Integer taskId) {
-        return repository.findByTaskId(taskId).orElseThrow(() -> new TaskNotFoundException(taskId));
+        return repository.findByTaskId(taskId).orElseThrow(() -> TaskNotificationNotFoundException.byTaskId(taskId));
     }
 
     @Override
@@ -41,7 +41,7 @@ public class TaskNotificationServiceImpl implements TaskNotificationService {
     @Override
     public TaskNotification updateById(Integer id, TaskNotification entity) {
         if (!repository.existsById(id)) {
-            throw new TaskNotificationNotFoundException(id);
+            throw TaskNotificationNotFoundException.byId(id);
         }
 
         entity.setId(id);
@@ -51,7 +51,7 @@ public class TaskNotificationServiceImpl implements TaskNotificationService {
     @Override
     public void deleteById(Integer id) {
         if (!repository.existsById(id)) {
-            throw new TaskNotificationNotFoundException(id);
+            throw TaskNotificationNotFoundException.byId(id);
         }
 
         repository.deleteById(id);

@@ -3,8 +3,8 @@ package com.vaka.daily.service.domain;
 import com.vaka.daily.domain.Schedule;
 import com.vaka.daily.domain.Task;
 import com.vaka.daily.domain.User;
-import com.vaka.daily.exception.ScheduleNotFoundException;
-import com.vaka.daily.exception.UserNotFoundException;
+import com.vaka.daily.exception.notfound.ScheduleNotFoundException;
+import com.vaka.daily.exception.notfound.UserNotFoundException;
 import com.vaka.daily.repository.ScheduleRepository;
 import com.vaka.daily.repository.TaskTypeRepository;
 import com.vaka.daily.repository.UserRepository;
@@ -40,7 +40,7 @@ public class ScheduleServiceImpl implements ScheduleService {
     @Override
     public Schedule getById(Integer id) {
         var temp = scheduleRepository.findById(id);
-        return temp.orElseThrow(() -> new ScheduleNotFoundException(id));
+        return temp.orElseThrow(() -> ScheduleNotFoundException.byId(id));
     }
 
     @Override
@@ -60,7 +60,7 @@ public class ScheduleServiceImpl implements ScheduleService {
     @Override
     public List<Schedule> getByUserId(Integer id) {
         if (!userRepository.existsById(id)) {
-            throw new UserNotFoundException(id);
+            throw UserNotFoundException.byId(id);
         }
 
         return scheduleRepository.findByUserId(id);
@@ -82,7 +82,7 @@ public class ScheduleServiceImpl implements ScheduleService {
     @Override
     public Schedule updateById(Integer id, Schedule entity) {
         if (!scheduleRepository.existsById(id)) {
-            throw new ScheduleNotFoundException(id);
+            throw ScheduleNotFoundException.byId(id);
         }
 
         entity.setId(id);
@@ -92,7 +92,7 @@ public class ScheduleServiceImpl implements ScheduleService {
     @Override
     public void deleteById(Integer id) {
         if (!scheduleRepository.existsById(id)) {
-            throw new ScheduleNotFoundException(id);
+            throw ScheduleNotFoundException.byId(id);
         }
 
         scheduleRepository.deleteById(id);

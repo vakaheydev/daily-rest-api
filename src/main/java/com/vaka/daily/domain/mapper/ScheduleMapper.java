@@ -2,7 +2,7 @@ package com.vaka.daily.domain.mapper;
 
 import com.vaka.daily.domain.Schedule;
 import com.vaka.daily.domain.dto.ScheduleDto;
-import com.vaka.daily.exception.UserNotFoundException;
+import com.vaka.daily.exception.notfound.UserNotFoundException;
 import com.vaka.daily.repository.UserRepository;
 import org.springframework.stereotype.Component;
 
@@ -28,7 +28,7 @@ public class ScheduleMapper implements DtoMapper<Schedule, ScheduleDto> {
                 .id(dto.getId())
                 .name(dto.getName())
                 .user(userRepository.findById(dto.getUserId())
-                        .orElseThrow(() -> new UserNotFoundException(dto.getUserId())))
+                        .orElseThrow(() -> UserNotFoundException.byId(dto.getUserId())))
                 .tasks(dto.getTasks().stream().map(taskMapper::fromDto).toList())
                 .build();
     }

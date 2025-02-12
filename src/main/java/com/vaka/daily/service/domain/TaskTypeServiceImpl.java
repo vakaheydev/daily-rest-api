@@ -1,7 +1,7 @@
 package com.vaka.daily.service.domain;
 
 import com.vaka.daily.domain.TaskType;
-import com.vaka.daily.exception.TaskTypeNotFoundException;
+import com.vaka.daily.exception.notfound.TaskTypeNotFoundException;
 import com.vaka.daily.repository.TaskTypeRepository;
 import org.springframework.stereotype.Service;
 
@@ -23,7 +23,7 @@ public class TaskTypeServiceImpl implements TaskTypeService {
     @Override
     public TaskType getById(Integer id) {
         var optional = taskTypeRepository.findById(id);
-        return optional.orElseThrow(() -> new TaskTypeNotFoundException(id));
+        return optional.orElseThrow(() -> TaskTypeNotFoundException.byId(id));
     }
 
     @Override
@@ -34,7 +34,7 @@ public class TaskTypeServiceImpl implements TaskTypeService {
     @Override
     public TaskType updateById(Integer id, TaskType entity) {
         if (!taskTypeRepository.existsById(id)) {
-            throw new TaskTypeNotFoundException(id);
+            throw TaskTypeNotFoundException.byId(id);
         }
 
         entity.setId(id);
@@ -44,7 +44,7 @@ public class TaskTypeServiceImpl implements TaskTypeService {
     @Override
     public void deleteById(Integer id) {
         if (!taskTypeRepository.existsById(id)) {
-            throw new TaskTypeNotFoundException(id);
+            throw TaskTypeNotFoundException.byId(id);
         }
 
         taskTypeRepository.deleteById(id);
