@@ -1,7 +1,7 @@
 package com.vaka.daily.service.domain;
 
 import com.vaka.daily.domain.UserType;
-import com.vaka.daily.exception.UserTypeNotFoundException;
+import com.vaka.daily.exception.notfound.UserTypeNotFoundException;
 import com.vaka.daily.repository.UserTypeRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,12 +26,12 @@ public class UserTypeServiceImpl implements UserTypeService {
 
     @Override
     public UserType getById(Integer id) {
-        return repository.findById(id).orElseThrow(() -> new UserTypeNotFoundException(id));
+        return repository.findById(id).orElseThrow(() -> UserTypeNotFoundException.byId(id));
     }
 
     @Override
     public UserType getByUniqueName(String name) {
-        return repository.findByName(name).orElseThrow(() -> new UserTypeNotFoundException(name));
+        return repository.findByName(name).orElseThrow(() -> UserTypeNotFoundException.byName(name));
     }
 
     @Override
@@ -47,7 +47,7 @@ public class UserTypeServiceImpl implements UserTypeService {
     @Override
     public UserType updateById(Integer id, UserType entity) {
         if (!repository.existsById(id)) {
-            throw new UserTypeNotFoundException(id);
+            throw UserTypeNotFoundException.byId(id);
         }
 
         entity.setId(id);
@@ -57,7 +57,7 @@ public class UserTypeServiceImpl implements UserTypeService {
     @Override
     public void deleteById(Integer id) {
         if (!repository.existsById(id)) {
-            throw new UserTypeNotFoundException(id);
+            throw UserTypeNotFoundException.byId(id);
         }
 
         repository.deleteById(id);

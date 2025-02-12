@@ -4,7 +4,7 @@ import com.vaka.daily.domain.Schedule;
 import com.vaka.daily.domain.User;
 import com.vaka.daily.domain.UserType;
 import com.vaka.daily.domain.dto.UserDto;
-import com.vaka.daily.exception.UserNotFoundException;
+import com.vaka.daily.exception.notfound.UserNotFoundException;
 import com.vaka.daily.repository.UserRepository;
 import com.vaka.daily.telegram.TelegramClient;
 import lombok.extern.slf4j.Slf4j;
@@ -39,17 +39,17 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User getById(Integer id) {
-        return userRepository.findById(id).orElseThrow(() -> new UserNotFoundException(id));
+        return userRepository.findById(id).orElseThrow(() -> UserNotFoundException.byId(id));
     }
 
     @Override
     public User getByUniqueName(String login) {
-        return userRepository.findByLogin(login).orElseThrow(() -> new UserNotFoundException(login));
+        return userRepository.findByLogin(login).orElseThrow(() -> UserNotFoundException.byName(login));
     }
 
     @Override
     public User getByTgId(Long tgId) {
-        return userRepository.findByTelegramId(tgId).orElseThrow(() -> new UserNotFoundException(tgId));
+        return userRepository.findByTelegramId(tgId).orElseThrow(() -> UserNotFoundException.byTelegramId(tgId));
     }
 
     @Override
@@ -88,7 +88,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User updateById(Integer id, User entity) {
-        User oldUser = userRepository.findById(id).orElseThrow(() -> new UserNotFoundException(id));
+        User oldUser = userRepository.findById(id).orElseThrow(() -> UserNotFoundException.byId(id));
 
         entity.setId(id);
 
@@ -102,7 +102,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public void deleteById(Integer id) {
         if (!userRepository.existsById(id)) {
-            throw new UserNotFoundException(id);
+            throw UserNotFoundException.byId(id);
         }
 
         userRepository.deleteById(id);

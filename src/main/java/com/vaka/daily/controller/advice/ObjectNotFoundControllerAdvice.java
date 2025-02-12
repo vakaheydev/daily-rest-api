@@ -1,7 +1,8 @@
 package com.vaka.daily.controller.advice;
 
-import com.vaka.daily.exception.ObjectNotFoundException;
+import com.vaka.daily.exception.notfound.ObjectNotFoundException;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpStatus;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -14,6 +15,7 @@ import java.util.Set;
 
 @RestControllerAdvice
 @Slf4j
+@Order(1)
 public class ObjectNotFoundControllerAdvice {
     @ExceptionHandler(ObjectNotFoundException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
@@ -33,7 +35,7 @@ public class ObjectNotFoundControllerAdvice {
 
     private String generateMissingFieldsInfo(ObjectNotFoundException ex) {
         StringBuilder sb = new StringBuilder();
-        Set<Map.Entry<String, String>> details = ex.getDetails();
+        Set<Map.Entry<String, Object>> details = ex.getDetails();
 
         for (var detail : details) {
             sb.append(detail.getKey()).append(";");
@@ -44,7 +46,7 @@ public class ObjectNotFoundControllerAdvice {
 
     private Map<String, Object> generateDetails(ObjectNotFoundException ex, String missingFields) {
         Map<String, Object> reqDetails = new HashMap<>();
-        Set<Map.Entry<String, String>> exDetails = ex.getDetails();
+        Set<Map.Entry<String, Object>> exDetails = ex.getDetails();
 
         reqDetails.put("missingFields", missingFields);
 
