@@ -2,7 +2,7 @@ package com.vaka.daily.service.domain;
 
 import com.vaka.daily.domain.BindingToken;
 import com.vaka.daily.domain.User;
-import com.vaka.daily.exception.BindingTokenNotFoundException;
+import com.vaka.daily.exception.notfound.BindingTokenNotFoundException;
 import com.vaka.daily.repository.BindingTokenRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
