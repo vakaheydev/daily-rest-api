@@ -26,12 +26,12 @@ public class UserTypeServiceImpl implements UserTypeService {
 
     @Override
     public UserType getById(Integer id) {
-        return repository.findById(id).orElseThrow(() -> UserTypeNotFoundException.byId(id));
+        return repository.findById(id).orElseThrow(() -> new UserTypeNotFoundException("id", id));
     }
 
     @Override
     public UserType getByUniqueName(String name) {
-        return repository.findByName(name).orElseThrow(() -> UserTypeNotFoundException.byName(name));
+        return repository.findByName(name).orElseThrow(() -> new UserTypeNotFoundException("name", name));
     }
 
     @Override
@@ -47,7 +47,7 @@ public class UserTypeServiceImpl implements UserTypeService {
     @Override
     public UserType updateById(Integer id, UserType entity) {
         if (!repository.existsById(id)) {
-            throw UserTypeNotFoundException.byId(id);
+            throw new UserTypeNotFoundException("id", id);
         }
 
         entity.setId(id);
@@ -57,7 +57,7 @@ public class UserTypeServiceImpl implements UserTypeService {
     @Override
     public void deleteById(Integer id) {
         if (!repository.existsById(id)) {
-            throw UserTypeNotFoundException.byId(id);
+            throw new UserTypeNotFoundException("id", id);
         }
 
         repository.deleteById(id);

@@ -31,7 +31,7 @@ public class BindingTokenServiceImpl implements BindingTokenService {
 
     @Override
     public BindingToken getByTokenValue(String tokenValue) {
-        return bindingTokenRepository.findByValue(tokenValue).orElseThrow(() -> BindingTokenNotFoundException.byValue(tokenValue));
+        return bindingTokenRepository.findByValue(tokenValue).orElseThrow(() -> new BindingTokenNotFoundException("value", tokenValue));
     }
 
     @Override
@@ -48,12 +48,12 @@ public class BindingTokenServiceImpl implements BindingTokenService {
 
     @Override
     public BindingToken getByUserId(Integer userId) {
-        return bindingTokenRepository.findByUserId(userId).orElseThrow(() -> BindingTokenNotFoundException.byUserId(userId));
+        return bindingTokenRepository.findByUserId(userId).orElseThrow(() -> new BindingTokenNotFoundException("userId", userId));
     }
 
     @Override
     public BindingToken getById(Integer id) {
-        return bindingTokenRepository.findById(id).orElseThrow(() -> BindingTokenNotFoundException.byId(id));
+        return bindingTokenRepository.findById(id).orElseThrow(() -> new BindingTokenNotFoundException("id", id));
     }
 
     private BindingToken generateToken(Integer userId) {

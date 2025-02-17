@@ -39,17 +39,17 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User getById(Integer id) {
-        return userRepository.findById(id).orElseThrow(() -> UserNotFoundException.byId(id));
+        return userRepository.findById(id).orElseThrow(() -> new UserNotFoundException("id", id));
     }
 
     @Override
     public User getByUniqueName(String login) {
-        return userRepository.findByLogin(login).orElseThrow(() -> UserNotFoundException.byName(login));
+        return userRepository.findByLogin(login).orElseThrow(() -> new UserNotFoundException("name", login));
     }
 
     @Override
     public User getByTgId(Long tgId) {
-        return userRepository.findByTelegramId(tgId).orElseThrow(() -> UserNotFoundException.byTelegramId(tgId));
+        return userRepository.findByTelegramId(tgId).orElseThrow(() -> new UserNotFoundException("telegramId", tgId));
     }
 
     @Override
@@ -88,7 +88,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User updateById(Integer id, User entity) {
-        User oldUser = userRepository.findById(id).orElseThrow(() -> UserNotFoundException.byId(id));
+        User oldUser = userRepository.findById(id).orElseThrow(() -> new UserNotFoundException("id", id));
 
         entity.setId(id);
 
@@ -102,7 +102,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public void deleteById(Integer id) {
         if (!userRepository.existsById(id)) {
-            throw UserNotFoundException.byId(id);
+            throw new UserNotFoundException("id", id);
         }
 
         userRepository.deleteById(id);

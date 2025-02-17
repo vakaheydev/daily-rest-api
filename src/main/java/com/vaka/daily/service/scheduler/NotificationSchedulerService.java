@@ -6,10 +6,10 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @Slf4j
-public class SchedulerService {
+public class NotificationSchedulerService {
     private final NotificationService notificationService;
 
-    public SchedulerService(NotificationService notificationService) {
+    public NotificationSchedulerService(NotificationService notificationService) {
         this.notificationService = notificationService;
     }
 

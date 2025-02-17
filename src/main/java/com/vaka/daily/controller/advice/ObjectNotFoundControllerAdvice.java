@@ -24,8 +24,10 @@ public class ObjectNotFoundControllerAdvice {
 
         String missingFields = generateMissingFieldsInfo(ex);
         Map<String, Object> details = generateDetails(ex, missingFields);
+        String objName = ex.getDetail("objectName").orElseThrow().toString();
+        String exName =  objName + ex.getClass().getSimpleName();
 
-        map.put("error", ex.getClass().getSimpleName());
+        map.put("error", exName);
         map.put("message", ex.getMessage());
         map.put("status", "404");
         map.put("details", details);

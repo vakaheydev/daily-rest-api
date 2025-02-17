@@ -48,11 +48,6 @@ public class NotificationService {
             User user = entry.getKey();
             List<Task> tasks = entry.getValue();
 
-            if (!telegramEnabled) {
-                log.info("Telegram is disabled");
-                break;
-            }
-
             notifyUserByTelegram(user, tasks);
         }
     }
