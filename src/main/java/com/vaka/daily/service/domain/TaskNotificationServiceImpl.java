@@ -25,12 +25,12 @@ public class TaskNotificationServiceImpl implements TaskNotificationService {
 
     @Override
     public TaskNotification getById(Integer id) {
-        return repository.findById(id).orElseThrow(() -> TaskNotificationNotFoundException.byId(id));
+        return repository.findById(id).orElseThrow(() -> new TaskNotificationNotFoundException("id", id));
     }
 
     @Override
     public TaskNotification getByTaskId(Integer taskId) {
-        return repository.findByTaskId(taskId).orElseThrow(() -> TaskNotificationNotFoundException.byTaskId(taskId));
+        return repository.findByTaskId(taskId).orElseThrow(() -> new TaskNotFoundException("id", taskId));
     }
 
     @Override
@@ -41,7 +41,7 @@ public class TaskNotificationServiceImpl implements TaskNotificationService {
     @Override
     public TaskNotification updateById(Integer id, TaskNotification entity) {
         if (!repository.existsById(id)) {
-            throw TaskNotificationNotFoundException.byId(id);
+            throw new TaskNotificationNotFoundException("id", id);
         }
 
         entity.setId(id);
@@ -51,7 +51,7 @@ public class TaskNotificationServiceImpl implements TaskNotificationService {
     @Override
     public void deleteById(Integer id) {
         if (!repository.existsById(id)) {
-            throw TaskNotificationNotFoundException.byId(id);
+            throw new TaskNotificationNotFoundException("id", id);
         }
 
         repository.deleteById(id);

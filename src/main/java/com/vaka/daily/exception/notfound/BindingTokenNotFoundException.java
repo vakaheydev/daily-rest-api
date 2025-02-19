@@ -1,11 +1,12 @@
 package com.vaka.daily.exception.notfound;
 
 public class BindingTokenNotFoundException extends ObjectNotFoundException {
-    public static ObjectNotFoundException byValue(String value) {
-        return by("value", value);
+    public BindingTokenNotFoundException(String detailName, Object detailValue) {
+        super(detailName, detailValue);
     }
 
-    public static ObjectNotFoundException byUserId(Integer userId) {
-        return by("userId", userId);
+    @Override
+    protected String getObjectName() {
+        return "BindingToken";
     }
 }

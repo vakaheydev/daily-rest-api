@@ -23,7 +23,7 @@ public class TaskTypeServiceImpl implements TaskTypeService {
     @Override
     public TaskType getById(Integer id) {
         var optional = taskTypeRepository.findById(id);
-        return optional.orElseThrow(() -> TaskTypeNotFoundException.byId(id));
+        return optional.orElseThrow(() -> new TaskTypeNotFoundException("id", id));
     }
 
     @Override
@@ -34,7 +34,7 @@ public class TaskTypeServiceImpl implements TaskTypeService {
     @Override
     public TaskType updateById(Integer id, TaskType entity) {
         if (!taskTypeRepository.existsById(id)) {
-            throw TaskTypeNotFoundException.byId(id);
+            throw new TaskTypeNotFoundException("id", id);
         }
 
         entity.setId(id);
@@ -44,7 +44,7 @@ public class TaskTypeServiceImpl implements TaskTypeService {
     @Override
     public void deleteById(Integer id) {
         if (!taskTypeRepository.existsById(id)) {
-            throw TaskTypeNotFoundException.byId(id);
+            throw new TaskTypeNotFoundException("id", id);
         }
 
         taskTypeRepository.deleteById(id);

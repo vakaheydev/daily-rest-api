@@ -1,7 +1,12 @@
 package com.vaka.daily.exception.notfound;
 
-public class UserNotFoundException extends CommonObjectNotFoundException {
-    public static ObjectNotFoundException byTelegramId(Long telegramId) {
-        return by("telegramId", telegramId);
+public class UserNotFoundException extends ObjectNotFoundException {
+    public UserNotFoundException(String detailName, Object detailValue) {
+        super(detailName, detailValue);
+    }
+
+    @Override
+    protected String getObjectName() {
+        return "User";
     }
 }

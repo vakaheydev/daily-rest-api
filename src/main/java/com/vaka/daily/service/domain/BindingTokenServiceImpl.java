@@ -14,46 +14,51 @@ import java.util.List;
 
 @Service
 public class BindingTokenServiceImpl implements BindingTokenService {
-    private final BindingTokenRepository bindingTokenRepository;
+    private final BindingTokenRepository repo;
 
     private final SecureRandom secureRandom = new SecureRandom();
     private final Base64.Encoder base64Encoder = Base64.getUrlEncoder();
 
     @Autowired
-    public BindingTokenServiceImpl(BindingTokenRepository bindingTokenRepository) {
-        this.bindingTokenRepository = bindingTokenRepository;
+    public BindingTokenServiceImpl(BindingTokenRepository repo) {
+        this.repo = repo;
     }
 
     @Override
     public List<BindingToken> getAll() {
-        return bindingTokenRepository.findAll();
+        return repo.findAll();
     }
 
     @Override
     public BindingToken getByTokenValue(String tokenValue) {
-        return bindingTokenRepository.findByValue(tokenValue).orElseThrow(() -> BindingTokenNotFoundException.byValue(tokenValue));
+        return repo.findByValue(tokenValue).orElseThrow(() -> new BindingTokenNotFoundException("value", tokenValue));
     }
 
     @Override
-    public void deleteExpiredTasks() {
-        bindingTokenRepository.deleteExpiredTokens();
+    public long count() {
+        return repo.count();
+    }
+
+    @Override
+    public int deleteExpiredTasks() {
+        return repo.deleteExpiredTokens();
     }
 
     @Override
     public BindingToken createToken(Integer userId) {
         BindingToken newToken = generateToken(userId);
 
-        return bindingTokenRepository.save(newToken);
+        return repo.save(newToken);
     }
 
     @Override
     public BindingToken getByUserId(Integer userId) {
-        return bindingTokenRepository.findByUserId(userId).orElseThrow(() -> BindingTokenNotFoundException.byUserId(userId));
+        return repo.findByUserId(userId).orElseThrow(() -> new BindingTokenNotFoundException("userId", userId));
     }
 
     @Override
     public BindingToken getById(Integer id) {
-        return bindingTokenRepository.findById(id).orElseThrow(() -> BindingTokenNotFoundException.byId(id));
+        return repo.findById(id).orElseThrow(() -> new BindingTokenNotFoundException("id", id));
     }
 
     private BindingToken generateToken(Integer userId) {
