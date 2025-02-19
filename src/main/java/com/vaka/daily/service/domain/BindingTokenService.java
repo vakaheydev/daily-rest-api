@@ -10,5 +10,6 @@ public interface BindingTokenService {
     BindingToken getByTokenValue(String tokenValue);
     BindingToken getByUserId(Integer userId);
     BindingToken getById(Integer id);
-    void deleteExpiredTasks();
+    long count();
+    int deleteExpiredTasks();
 }

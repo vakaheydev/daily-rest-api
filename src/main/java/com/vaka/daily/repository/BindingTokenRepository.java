@@ -17,5 +17,5 @@ public interface BindingTokenRepository extends JpaRepository<BindingToken, Inte
     @Transactional
     @Modifying
     @Query(value = "DELETE FROM binding_token WHERE created_at < NOW() - INTERVAL '30 seconds'", nativeQuery = true)
-    void deleteExpiredTokens();
+    int deleteExpiredTokens();
 }

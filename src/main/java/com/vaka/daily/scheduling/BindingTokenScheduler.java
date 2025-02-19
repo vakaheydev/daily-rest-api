@@ -18,9 +18,10 @@ public class BindingTokenScheduler {
         this.bindingTokenService = bindingTokenService;
     }
 
-    @Scheduled(fixedRate = 15, timeUnit = TimeUnit.SECONDS)
+    @Scheduled(fixedRate = 10, timeUnit = TimeUnit.SECONDS)
     public void deleteExpiredTokens() {
         log.debug("Started binding token scheduler");
-        bindingTokenService.deleteExpiredTasks();
+        int tokensDeleted = bindingTokenService.deleteExpiredTasks();
+        log.info("{} tokens were deleted", tokensDeleted);
     }
 }

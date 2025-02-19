@@ -1,4 +1,4 @@
-package com.vaka.daily.service.scheduler.format;
+package com.vaka.daily.service.notification.format;
 
 import com.vaka.daily.domain.Task;
 import com.vaka.daily.domain.TaskType;

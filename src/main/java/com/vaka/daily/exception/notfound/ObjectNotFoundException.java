@@ -12,7 +12,7 @@ public abstract class ObjectNotFoundException extends RuntimeException {
     private final Map<String, Object> details;
 
     protected ObjectNotFoundException(String detailName, Object detailValue) {
-        super("Object wasn't found. See getDetails() for more details.");
+        super("Object wasn't found. See details for more details.");
         this.details = new HashMap<>();
         putDetail(detailName, detailValue);
         putDetail("objectName", getObjectName());
