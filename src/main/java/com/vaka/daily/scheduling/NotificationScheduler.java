@@ -1,30 +1,28 @@
 package com.vaka.daily.scheduling;
 
-import com.vaka.daily.service.scheduler.SchedulerService;
+import com.vaka.daily.service.notification.NotificationService;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.scheduling.annotation.SchedulingConfigurer;
-import org.springframework.scheduling.config.ScheduledTaskRegistrar;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
-import java.time.Duration;
-import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 
 @Slf4j
 @Component
-public class NotificationScheduler implements SchedulingConfigurer {
-    @Value("${notification.loop}")
-    private Integer secondsLoop;
+@ConditionalOnProperty(value = "notification.enabled", havingValue = "true")
+public class NotificationScheduler {
+    private final NotificationService service;
 
-    private final SchedulerService service;
-
-    public NotificationScheduler(SchedulerService service) {
+    @Autowired
+    public NotificationScheduler(NotificationService service) {
         this.service = service;
     }
 
-    @Override
-    public void configureTasks(ScheduledTaskRegistrar taskRegistrar) {
-        taskRegistrar.setScheduler(Executors.newScheduledThreadPool(1));
-        taskRegistrar.addFixedRateTask(service::process, Duration.ofSeconds(secondsLoop));
+    @Scheduled(fixedRate = 10, timeUnit = TimeUnit.SECONDS)
+    public void deleteExpiredTokens() {
+        log.debug("Started notification scheduler");
+        service.notifyUsers();
     }
 }

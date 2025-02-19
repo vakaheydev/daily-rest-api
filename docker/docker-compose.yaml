@@ -10,8 +10,10 @@ services:
       DB_USERNAME: postgres
       DB_PASSWORD: 12345
 
+      NOTIFICATION_ENABLED: true
+      TG_BINDING_ENABLED: true
+
       REST_API_PORT: 8080
-      REST_API_NOTIFICATION_LOOP: 10
 
       TG_BOT_HOST: tg-bot
       TG_BOT_PORT: 8889

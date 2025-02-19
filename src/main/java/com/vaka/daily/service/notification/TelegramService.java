@@ -1,4 +1,4 @@
-package com.vaka.daily.service.scheduler;
+package com.vaka.daily.service.notification;
 
 import com.vaka.daily.telegram.TelegramClient;
 import lombok.extern.slf4j.Slf4j;

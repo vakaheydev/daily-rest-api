@@ -18,6 +18,7 @@ public class ExceptionAdvice {
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     public Map<String, String> exceptionHandler(Exception ex) {
         log.error("{} | Unresolved exception: {}", ex.getClass().getSimpleName(), ex.getMessage());
+        ex.printStackTrace();
 
         Map<String, String> map = new HashMap<>();
         map.put("error", ex.getClass().getSimpleName());

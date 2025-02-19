@@ -28,7 +28,7 @@ public class ScheduleMapper implements DtoMapper<Schedule, ScheduleDto> {
                 .id(dto.getId())
                 .name(dto.getName())
                 .user(userRepository.findById(dto.getUserId())
-                        .orElseThrow(() -> UserNotFoundException.byId(dto.getUserId())))
+                        .orElseThrow(() -> new UserNotFoundException("id", dto.getUserId())))
                 .tasks(dto.getTasks().stream().map(taskMapper::fromDto).toList())
                 .build();
     }

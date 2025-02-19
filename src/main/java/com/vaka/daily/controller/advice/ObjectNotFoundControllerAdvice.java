@@ -24,8 +24,9 @@ public class ObjectNotFoundControllerAdvice {
 
         String missingFields = generateMissingFieldsInfo(ex);
         Map<String, Object> details = generateDetails(ex, missingFields);
+        String exName =  ex.getClass().getSimpleName();
 
-        map.put("error", ex.getClass().getSimpleName());
+        map.put("error", exName);
         map.put("message", ex.getMessage());
         map.put("status", "404");
         map.put("details", details);
@@ -38,7 +39,9 @@ public class ObjectNotFoundControllerAdvice {
         Set<Map.Entry<String, Object>> details = ex.getDetails();
 
         for (var detail : details) {
-            sb.append(detail.getKey()).append(";");
+            if (!detail.getKey().equals("objectName")) {
+                sb.append(detail.getKey()).append(";");
+            }
         }
 
         return sb.toString();

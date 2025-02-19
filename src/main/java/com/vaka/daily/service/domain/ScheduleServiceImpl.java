@@ -40,7 +40,7 @@ public class ScheduleServiceImpl implements ScheduleService {
     @Override
     public Schedule getById(Integer id) {
         var temp = scheduleRepository.findById(id);
-        return temp.orElseThrow(() -> ScheduleNotFoundException.byId(id));
+        return temp.orElseThrow(() -> new ScheduleNotFoundException("id", id));
     }
 
     @Override
@@ -60,7 +60,7 @@ public class ScheduleServiceImpl implements ScheduleService {
     @Override
     public List<Schedule> getByUserId(Integer id) {
         if (!userRepository.existsById(id)) {
-            throw UserNotFoundException.byId(id);
+            throw new UserNotFoundException("id", id);
         }
 
         return scheduleRepository.findByUserId(id);
@@ -82,7 +82,7 @@ public class ScheduleServiceImpl implements ScheduleService {
     @Override
     public Schedule updateById(Integer id, Schedule entity) {
         if (!scheduleRepository.existsById(id)) {
-            throw ScheduleNotFoundException.byId(id);
+            throw new ScheduleNotFoundException("id", id);
         }
 
         entity.setId(id);
@@ -92,7 +92,7 @@ public class ScheduleServiceImpl implements ScheduleService {
     @Override
     public void deleteById(Integer id) {
         if (!scheduleRepository.existsById(id)) {
-            throw ScheduleNotFoundException.byId(id);
+            throw new ScheduleNotFoundException("id", id);
         }
 
         scheduleRepository.deleteById(id);
