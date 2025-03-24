@@ -157,8 +157,12 @@
 cd ./docker/remote
 ```
 
-В файле .env.origin исправьте ключ TG_BOT_TOKEN на токен Вашего телеграм бота
+В файле .env.origin исправьте ключ TG_BOT_TOKEN на токен Вашего телеграм бота  
+
 Переименуйте .env.origin в .env
+```sh
+move .env.origin .env
+```
 
 Запустите все сервисы:
 ```sh
