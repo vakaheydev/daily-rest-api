@@ -175,7 +175,7 @@ move .env.origin .env
 docker compose up --build -d 
 ```
 
-Подключитель к консоли контейнера db:
+Подключитесь к консоли контейнера db:
 ```sh
 docker exec -it db bash
 ```
