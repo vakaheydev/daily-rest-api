@@ -157,12 +157,15 @@
 cd ./docker/remote
 ```
 
+В файле .env.origin исправьте ключ TG_BOT_TOKEN на токен Вашего телеграм бота
+Переименуйте .env.origin в .env
+
 Запустите все сервисы:
 ```sh
 docker compose up --build -d 
 ```
 
-Чтобы запустить конкретный сервис, используйте команду ниже, но замените <service name> именем нужного сервиса (rest-api, mvc, tg-bot, etc.)
+Чтобы запустить конкретный сервис, используйте команду ниже, заменив <service name> именем нужного сервиса (rest-api, mvc, tg-bot, etc.)
 ```sh
 docker compose up --build -d <service name> 
 ```
