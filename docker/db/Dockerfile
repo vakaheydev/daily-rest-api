@@ -6,4 +6,4 @@ WORKDIR /sql-scripts
 
 COPY db-scripts .
 
-RUN chmod +x re-create.sh
+RUN chmod +x /sql-scripts/re-create.sh
