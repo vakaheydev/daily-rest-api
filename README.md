@@ -152,6 +152,12 @@
 
 Чтобы запустить все сервисы (REST API, клиент, MVC и Telegram-бот), выполните следующие команды:
 
+Склонируйте этот репозиторий:
+```sh
+git clone https://github.com/vakaheydev/daily-rest-api
+```
+или просто скопируйте/скачайте файлы [docker-compose.yaml](https://github.com/vakaheydev/daily-rest-api/blob/master/docker/remote/docker-compose.yaml) и [.env.origin](https://github.com/vakaheydev/daily-rest-api/blob/master/docker/remote/.env.origin) из папки [docker/remote](https://github.com/vakaheydev/daily-rest-api/tree/master/docker/remote)
+
 Перейдите в папку с докером:
 ```sh
 cd ./docker/remote
