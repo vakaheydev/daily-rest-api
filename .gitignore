@@ -4,6 +4,7 @@ target/
 !**/src/test/**/target/
 <<<<<<< HEAD
 *.jar
+docker/remote/.env
 
 ### IntelliJ IDEA ###
 .idea/modules.xml
