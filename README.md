@@ -143,7 +143,7 @@
 - **DELETE /task_type/{id}**  
   Удалить тип задачи по ID.
 
-### Требования
+### Требования для запуска приложения
 
 - Docker
 - Docker Compose
@@ -154,7 +154,7 @@
 
 Перейдите в папку с докером:
 ```sh
-cd ./docker
+cd ./docker/remote
 ```
 
 Запустите все сервисы:
@@ -162,7 +162,7 @@ cd ./docker
 docker compose up --build -d 
 ```
 
-Чтобы запустить конкретный сервис, используйте команду ниже, но замените <service name> именем нужного сервиса (rest-api, mvc, tg-bot)
+Чтобы запустить конкретный сервис, используйте команду ниже, но замените <service name> именем нужного сервиса (rest-api, mvc, tg-bot, etc.)
 ```sh
 docker compose up --build -d <service name> 
 ```
