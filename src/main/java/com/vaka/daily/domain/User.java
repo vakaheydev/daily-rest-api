@@ -1,8 +1,6 @@
 package com.vaka.daily.domain;
 
-import com.fasterxml.jackson.annotation.JsonIdentityInfo;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+import com.fasterxml.jackson.annotation.*;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Size;
@@ -50,16 +48,27 @@ public class User {
     @Column(name = "user_patronymic", length = 100)
     private String patronymic;
 
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "id_user_type", nullable = false)
-    @JsonIgnoreProperties({"users"})
     private UserType userType;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
     private List<Schedule> schedules = new ArrayList<>();
 
     @Column(name = "user_telegram_id", unique = true)
     private Long telegramId;
+
+    @JsonProperty("userTypeId")
+    public Integer getUserTypeId() {
+        return userType.getId();
+    }
+
+    @JsonProperty("schedulesId")
+    public List<Integer> getSchedulesId() {
+        return schedules.stream().map(Schedule::getId).toList();
+    }
 
     public User(Integer id) {
         this.id = id;

@@ -1,32 +1,21 @@
 package com.vaka.daily.domain;
 
-import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
-import com.fasterxml.jackson.annotation.ObjectIdGenerators;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.vaka.daily.domain.serialization.ScheduleDeserializer;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import java.util.List;
 
 @Entity
 @Table(name = "schedule")
-@JsonDeserialize(using = ScheduleDeserializer.class)
-@JsonIdentityInfo(
-        generator = ObjectIdGenerators.PropertyGenerator.class,
-        property = "id"
-)
 @AllArgsConstructor
-@Getter
-@Setter
+@Data
 @Builder
 public class Schedule {
     @Id
@@ -42,12 +31,22 @@ public class Schedule {
     @NotNull
     @ManyToOne
     @JoinColumn(name = "id_user")
-    @JsonIgnoreProperties({"schedules"})
+    @JsonIgnore
     private User user;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "schedule", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
-    @JsonManagedReference
     private List<Task> tasks;
+
+    @JsonProperty("tasksId")
+    public List<Integer> getTasksId() {
+        return tasks.stream().map(Task::getId).toList();
+    }
+
+    @JsonProperty("userId")
+    public Integer getUserId() {
+        return user.getId();
+    }
 
     public Schedule() {
     }

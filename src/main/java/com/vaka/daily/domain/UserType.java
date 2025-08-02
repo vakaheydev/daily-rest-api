@@ -1,5 +1,7 @@
 package com.vaka.daily.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Size;
@@ -20,9 +22,6 @@ public class UserType {
     @Size(max = 100)
     @Column(name = "user_type_name", nullable = false, unique = true, length = 100)
     private String name;
-
-    @OneToMany(mappedBy = "userType")
-    private List<User> users;
 
     public UserType() {
     }

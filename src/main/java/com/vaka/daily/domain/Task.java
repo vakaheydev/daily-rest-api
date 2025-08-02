@@ -12,14 +12,8 @@ import java.time.LocalDateTime;
 import java.util.Objects;
 
 @Entity
-@Table(name = "Task", uniqueConstraints = {@UniqueConstraint(columnNames = {"task_name", "task_description",
-        "id_schedule"})})
-@JsonIdentityInfo(
-        generator = ObjectIdGenerators.PropertyGenerator.class,
-        property = "id"
-)
-@Getter
-@Setter
+@Table(name = "Task", uniqueConstraints = {@UniqueConstraint(columnNames = {"task_name", "task_description", "id_schedule"})})
+@Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
@@ -48,7 +42,7 @@ public class Task {
     @NotNull
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.MERGE)
     @JoinColumn(name = "id_schedule")
-    @JsonBackReference
+    @JsonIgnore
     private Schedule schedule;
 
     @NotNull
@@ -57,7 +51,8 @@ public class Task {
     @JsonIgnore
     private TaskType taskType;
 
-    @OneToOne(mappedBy = "task", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
+    @OneToOne(mappedBy = "task", cascade = CascadeType.REMOVE)
+    @JsonIgnore
     private TaskNotification taskNotification;
 
     @JsonProperty("scheduleId")

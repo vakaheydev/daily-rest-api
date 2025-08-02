@@ -58,7 +58,7 @@ public class TaskController {
 
         Task task = taskMapper.fromDto(taskDto);
 
-        return ResponseEntity.status(HttpStatus.CREATED).body(taskMapper.toDto(taskService.create(task)));
+        return ResponseEntity.status(HttpStatus.CREATED).body(taskService.create(task));
     }
 
     @PutMapping("/{id}")

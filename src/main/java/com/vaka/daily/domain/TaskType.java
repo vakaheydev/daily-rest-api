@@ -1,6 +1,5 @@
 package com.vaka.daily.domain;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Size;
@@ -9,7 +8,6 @@ import lombok.Data;
 @Entity
 @Table(name = "task_type")
 @Data
-@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class TaskType {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

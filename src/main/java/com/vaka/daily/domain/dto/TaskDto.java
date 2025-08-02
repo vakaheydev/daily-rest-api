@@ -25,9 +25,10 @@ public class TaskDto {
     @Size(max = 100)
     private String description;
 
+    @NotNull
     private LocalDateTime deadline;
 
-    private Boolean status;
+    private Boolean status = true;
 
     @NotNull
     private Integer scheduleId;
