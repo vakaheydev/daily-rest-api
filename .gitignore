@@ -7,14 +7,12 @@ target/
 docker/remote/.env
 
 ### IntelliJ IDEA ###
-.idea/modules.xml
-.idea/jarRepositories.xml
-.idea/compiler.xml
-.idea/libraries/
+.idea/*
 *.iws
 *.iml
 *.ipr
 application.properties
+application.yaml
 
 ### Eclipse ###
 .apt_generated

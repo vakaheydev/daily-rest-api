@@ -4,6 +4,7 @@ import com.vaka.daily.domain.TaskType;
 import com.vaka.daily.exception.ValidationException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.dao.InvalidDataAccessResourceUsageException;
 import org.springframework.data.repository.config.RepositoryNameSpaceHandler;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -48,10 +49,11 @@ public class ExceptionAdvice {
             msg = ((ValidationException) ex).getBindingResult().getFieldErrors().stream().map(fieldError -> fieldError.getField() + ": " + fieldError.getDefaultMessage()).collect(Collectors.joining("; "));
         }
 
-        if (ex instanceof DataIntegrityViolationException) {
-            msg = "SQL exception";
+        if (ex instanceof DataIntegrityViolationException ||
+            ex instanceof InvalidDataAccessResourceUsageException) {
+            return "Database error";
         }
 
-        return msg;
+        return "Bad request";
     }
 }
