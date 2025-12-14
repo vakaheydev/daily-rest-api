@@ -5,6 +5,7 @@ import com.vaka.daily.domain.dto.TaskDto;
 import com.vaka.daily.domain.mapper.TaskMapper;
 import com.vaka.daily.exception.ValidationException;
 import com.vaka.daily.service.domain.ScheduleService;
+import com.vaka.daily.service.domain.TaskNotificationService;
 import com.vaka.daily.service.domain.TaskService;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
@@ -18,11 +19,13 @@ import org.springframework.web.bind.annotation.*;
 @Slf4j
 public class TaskController {
     private final TaskService taskService;
+    private final TaskNotificationService taskNotificationService;
     private final ScheduleService scheduleService;
     private final TaskMapper taskMapper;
 
-    public TaskController(TaskService taskService, ScheduleService scheduleService, TaskMapper taskMapper) {
+    public TaskController(TaskService taskService, TaskNotificationService taskNotificationService, ScheduleService scheduleService, TaskMapper taskMapper) {
         this.taskService = taskService;
+        this.taskNotificationService = taskNotificationService;
         this.scheduleService = scheduleService;
         this.taskMapper = taskMapper;
     }
@@ -35,6 +38,11 @@ public class TaskController {
     @GetMapping("/{id}")
     public ResponseEntity<?> getById(@PathVariable("id") Integer id) {
         return ResponseEntity.ok(taskMapper.toDto(taskService.getById(id)));
+    }
+
+    @GetMapping("/{id}/notification")
+    public ResponseEntity<?> getByIdNotification(@PathVariable("id") Integer id) {
+        return ResponseEntity.ok(taskNotificationService.getByTaskId(id));
     }
 
 //    @GetMapping("/search")

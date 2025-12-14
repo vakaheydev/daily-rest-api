@@ -29,7 +29,14 @@ public class ExceptionAdvice {
     public ResponseEntity<?> exceptionHandler(Exception ex) {
         log.error("{} | Exception: {}", ex.getClass().getSimpleName(), ex.getMessage());
 
-        int status = STATUS_MAP.getOrDefault(ex.getClass().getSimpleName(), 400);
+        int status;
+        if (ex.getClass().getSimpleName().contains("NotFoundException")) {
+            status = 404;
+        }
+        else {
+            status = STATUS_MAP.getOrDefault(ex.getClass().getSimpleName(), 400);
+        }
+
         String msg = resolveMessage(ex);
 
         Map<String, String> body = Map.of(
